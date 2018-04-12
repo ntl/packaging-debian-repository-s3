@@ -11,11 +11,4 @@ require 'pp'
 
 require 'package_repository/debian/client/controls'
 
-module PackageRepository
-  module Debian
-    module Client
-      Controls = Module.new
-    end
-  end
-end
 include PackageRepository::Debian::Client
