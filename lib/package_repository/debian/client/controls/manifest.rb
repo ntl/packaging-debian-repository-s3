@@ -3,29 +3,53 @@ module PackageRepository
     module Client
       module Controls
         module Manifest
+          def self.example(suite: nil, component: nil, architecture: nil, packages: nil)
+            suite ||= Suite.example
+            component ||= Component.example
+            architecture ||= Architecture.example
+            packages ||= Packages.example
+
+            Client::Manifest.build(
+              :suite => suite,
+              :component => component,
+              :architecutre => architecture,
+              :packages => packages
+            )
+          end
+
           module Packages
             def self.example
               [
-                OpenStruct.new(
+                Client::Manifest::Package.build({
                   :filename => 'some-package-1.1.1-11.deb',
                   :size => 11,
                   :md5 => 'aaaaaa',
                   :depends => 'some-dependency, other-dependency'
-                ),
+                }),
 
-                OpenStruct.new(
+                Client::Manifest::Package.build({
                   :filename => 'other-package-2.2.2-22.deb',
                   :size => 22,
                   :md5 => 'bbbbbb',
                   :depends => 'some-dependency, other-dependency'
-                )
+                })
               ]
             end
           end
 
           module Text
             def self.example
-              raw
+              text = raw
+
+              output_text = String.new
+
+              output_io = StringIO.new(output_text)
+
+              gzip_writer = Zlib::GzipWriter.new(output_io)
+              gzip_writer.write(text)
+              gzip_writer.close
+
+              output_text
             end
 
             def self.raw
