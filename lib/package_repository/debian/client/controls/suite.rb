@@ -4,7 +4,11 @@ module PackageRepository
       module Controls
         module Suite
           def self.example
-            'some-suite'
+            'stable'
+          end
+
+          def self.alternate
+            'unstable'
           end
         end
       end
