@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.4.0'
 
-  s.add_runtime_dependency 'aws-sdk-s3'
-
   s.add_runtime_dependency 'evt-configure'
   s.add_runtime_dependency 'evt-settings'
+
+  s.add_runtime_dependency 'aws-s3-client'
 
   s.add_development_dependency 'test_bench'
 end
