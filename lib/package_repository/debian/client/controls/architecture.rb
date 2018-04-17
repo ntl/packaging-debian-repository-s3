@@ -7,6 +7,10 @@ module PackageRepository
             'i386'
           end
 
+          def self.all
+            'all'
+          end
+
           def self.alternate
             'sparc'
           end
