@@ -1,28 +1,7 @@
 require_relative './automated_init'
 
 context "Package Control" do
-  package = Controls::Package::Metadata.package
-  version = Controls::Package::Metadata.version
-  maintainer = Controls::Package::Metadata.maintainer
-  description = Controls::Package::Metadata.description
-  homepage = Controls::Package::Metadata.homepage
-  depends = Controls::Package::Metadata.depends
-  priority = Controls::Package::Metadata.priority
-  architecture = Controls::Package::Metadata.architecture
-
-  contents = Controls::Package::Contents.example
-
-  deb_file = Controls::Package.example(
-    package: package,
-    version: version,
-    contents: contents,
-    maintainer: maintainer,
-    description: description,
-    homepage: homepage,
-    depends: depends,
-    priority: priority,
-    architecture: architecture
-  )
+  deb_file = Controls::Package::File.example
 
   comment "File location: #{deb_file}"
 
@@ -34,46 +13,55 @@ context "Package Control" do
     assert((File.extname(deb_file)) == '.deb')
   end
 
-  context "Metadata" do
-    read_field = Controls::Package::Metadata::GetField
+  context "Control Attributes" do
+    read_field = proc { |field|
+      line = `dpkg-deb -f #{deb_file} | grep '^#{field}:'`.chomp
 
-    context "Name "do
-      assert(read_field.(deb_file, :package) == package)
-    end
+      _, value = line.split(/[[:blank:]]+/, 2)
 
-    context "Version" do
-      assert(read_field.(deb_file, :version) == version)
-    end
+      value
+    }
 
-    context "Maintainer" do
-      assert(read_field.(deb_file, :maintainer) == maintainer)
-    end
+    {
+      'Package' => Controls::Package::Attributes.package,
+      'Source' => Controls::Package::Attributes.source,
+      'Version' => Controls::Package::Attributes.version,
+      'Section' => Controls::Package::Attributes.section,
+      'Priority' => Controls::Package::Attributes.priority,
+      'Architecture' => Controls::Package::Attributes.architecture,
+      'Essential' => 'yes',
+      'Depends' => Controls::Package::Attributes.depends,
+      'Pre-Depends' => Controls::Package::Attributes.pre_depends,
+      'Recommends' => Controls::Package::Attributes.recommends,
+      'Suggests' => Controls::Package::Attributes.suggests,
+      'Enhances' => Controls::Package::Attributes.enhances,
+      'Breaks' => Controls::Package::Attributes.breaks,
+      'Conflicts' => Controls::Package::Attributes.conflicts,
+      'Installed-Size' => Controls::Package::Attributes.installed_size.to_s,
+      'Maintainer' => Controls::Package::Attributes.maintainer,
+      'Description' => Controls::Package::Attributes.description,
+      'Homepage' => Controls::Package::Attributes.homepage,
+      'Built-Using' => Controls::Package::Attributes.built_using
+    }.each do |field, control_value|
+      test field do
+        value = read_field.(field)
 
-    context "Description" do
-      assert(read_field.(deb_file, :description) == description)
-    end
+        comment "Value: #{value.inspect}"
+        comment "Control: #{control_value.inspect}"
 
-    context "Homepage" do
-      assert(read_field.(deb_file, :homepage) == homepage)
-    end
-
-    context "Dependencies" do
-      assert(read_field.(deb_file, :depends) == depends)
-    end
-
-    context "Priority" do
-      assert(read_field.(deb_file, :priority) == priority)
-    end
-
-    context "Architecture" do
-      assert(read_field.(deb_file, :architecture) == architecture)
+        assert(value == control_value)
+      end
     end
   end
 
   context "Contents" do
-    extract_dir = Controls::Package::Extract.(deb_file)
+    control_contents = Controls::Package::Contents.example
 
-    contents.each do |file, data|
+    extract_dir = Dir.mktmpdir
+
+    `dpkg-deb -x #{deb_file} #{extract_dir}`
+
+    control_contents.each do |file, data|
       path = File.join(extract_dir, file)
 
       read_data = File.read(path)

@@ -23,7 +23,7 @@ context "RFC822" do
 
       test "Is converted to string" do
         assert(text == <<~TEXT)
-        SomeField: 111
+        Some-Field: 111
         TEXT
       end
     end
@@ -39,7 +39,7 @@ context "RFC822" do
 
       test "Is omitted" do
         assert(text == <<~TEXT)
-          PresentField: Some value
+          Present-Field: Some value
         TEXT
       end
     end

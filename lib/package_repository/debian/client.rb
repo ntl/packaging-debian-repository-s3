@@ -8,9 +8,7 @@ require 'transform'
 
 require 'package_repository/debian/client/rfc822'
 
-require 'package_repository/debian/client/control_file/attributes'
-
-require 'package_repository/debian/client/manifest'
-require 'package_repository/debian/client/manifest/transform'
+require 'package_repository/debian/client/package'
+require 'package_repository/debian/client/package/index'
 
 require 'package_repository/debian/client/manifest/get'

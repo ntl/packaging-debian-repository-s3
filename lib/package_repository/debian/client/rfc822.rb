@@ -66,6 +66,10 @@ module PackageRepository
 
               field = Casing::Pascal.(field.to_s)
 
+              field.gsub!(%r{[a-z][A-Z]}) do |str|
+                "#{str[0]}-#{str[1]}"
+              end
+
               text << "#{field}: "
 
               value.each_line.with_index do |line, index|

@@ -7,13 +7,13 @@ module PackageRepository
             def self.example
               <<~TEXT
                 # Some Comment
-                SomeField: Some Value
-                OtherField: First Line
+                Some-Field: Some Value
+                Other-Field: First Line
                     Second Line
                 \tThird Line
 
-                SomeField: Other Value
-                OtherField: Yet Another Value
+                Some-Field: Other Value
+                Other-Field: Yet Another Value
 
                 # Other Comment
               TEXT
@@ -22,13 +22,13 @@ module PackageRepository
             module Canonical
               def self.example
                 <<~TEXT
-                  SomeField: Some Value
-                  OtherField: First Line
+                  Some-Field: Some Value
+                  Other-Field: First Line
                    Second Line
                    Third Line
 
-                  SomeField: Other Value
-                  OtherField: Yet Another Value
+                  Some-Field: Other Value
+                  Other-Field: Yet Another Value
                 TEXT
               end
             end
@@ -45,8 +45,8 @@ module PackageRepository
               def self.example
                 <<~TEXT
                   # Some Comment
-                  SomeField: Some Value
-                  OtherField: First Line
+                  Some-Field: Some Value
+                  Other-Field: First Line
                       Second Line
                   \tThird Line
                 TEXT
@@ -55,8 +55,8 @@ module PackageRepository
               module Canonical
                 def self.example
                   <<~TEXT
-                    SomeField: Some Value
-                    OtherField: First Line
+                    Some-Field: Some Value
+                    Other-Field: First Line
                      Second Line
                      Third Line
                   TEXT

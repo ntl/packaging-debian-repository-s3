@@ -11,8 +11,10 @@ module PackageRepository
             'all'
           end
 
-          def self.alternate
-            'sparc'
+          module Alternate
+            def self.example
+              'sparc'
+            end
           end
         end
       end
