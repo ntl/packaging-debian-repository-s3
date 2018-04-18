@@ -24,6 +24,8 @@ module PackageRepository
                   :filename => 'some-package-1.1.1-11.deb',
                   :size => 11,
                   :md5 => 'aaaaaa',
+                  :package => 'some-package',
+                  :version => '1.1.1-11',
                   :depends => 'some-dependency, other-dependency'
                 }),
 
@@ -31,6 +33,8 @@ module PackageRepository
                   :filename => 'other-package-2.2.2-22.deb',
                   :size => 22,
                   :md5 => 'bbbbbb',
+                  :package => 'other-package',
+                  :version => '2.2.2-22',
                   :depends => 'some-dependency, other-dependency'
                 })
               ]
@@ -56,12 +60,16 @@ module PackageRepository
               <<~TEXT
               Filename: some-package-1.1.1-11.deb
               Size: 11
-              MD5: aaaaaa
+              Md5: aaaaaa
+              Package: some-package
+              Version: 1.1.1-11
               Depends: some-dependency, other-dependency
 
               Filename: other-package-2.2.2-22.deb
               Size: 22
-              MD5: bbbbbb
+              Md5: bbbbbb
+              Package: other-package
+              Version: 2.2.2-22
               Depends: some-dependency, other-dependency
               TEXT
             end

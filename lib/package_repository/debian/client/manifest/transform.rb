@@ -26,7 +26,11 @@ module PackageRepository
           end
 
           def self.raw_data(instance)
-            fail
+            packages = instance.packages
+
+            packages.map do |package|
+              package.to_h
+            end
           end
 
           module RFC822
@@ -46,7 +50,18 @@ module PackageRepository
               Client::RFC822.read(text)
             end
 
-            def self.write(manifest)
+            def self.write(raw_data)
+              compressed_text = String.new
+
+              output_io = StringIO.new(compressed_text)
+
+              text = Client::RFC822.write(raw_data)
+
+              gzip_writer = Zlib::GzipWriter.new(output_io)
+              gzip_writer.write(text)
+              gzip_writer.close
+
+              compressed_text
             end
           end
         end

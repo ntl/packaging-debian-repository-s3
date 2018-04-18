@@ -51,6 +51,36 @@ module PackageRepository
           paragraphs
         end
 
+        def self.write(data)
+          data = [data] if data.instance_of?(Hash)
+
+          text = String.new
+
+          data.each_with_index do |paragraph_data, index|
+            text << "\n" unless index.zero?
+
+            paragraph_data.each do |field, value|
+              value = String(value)
+
+              next if value.empty?
+
+              field = Casing::Pascal.(field.to_s)
+
+              text << "#{field}: "
+
+              value.each_line.with_index do |line, index|
+                text << "\n " unless index.zero?
+
+                text << line.chomp
+              end
+
+              text << "\n"
+            end
+          end
+
+          text
+        end
+
         ParseError = Class.new(StandardError)
 
         module Patterns

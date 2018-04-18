@@ -16,7 +16,9 @@ module PackageRepository
           attribute :filename, String
           attribute :size, Integer
           attribute :md5, String
-          attribute :depends, String
+          attribute :description_md5, String
+
+          include ControlFile::Attributes
         end
       end
     end
