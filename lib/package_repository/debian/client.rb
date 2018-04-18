@@ -6,6 +6,8 @@ require 'schema'
 require 'settings'; Settings.activate
 require 'transform'
 
+require 'package_repository/debian/client/rfc822'
+
 require 'package_repository/debian/client/manifest'
 require 'package_repository/debian/client/manifest/transform'
 

@@ -33,39 +33,17 @@ module PackageRepository
             def self.read(compressed_text)
               input_io = StringIO.new(compressed_text)
 
+              text = String.new
+
               gzip_reader = Zlib::GzipReader.new(input_io)
 
-              packages = []
-
-              index = 0
-
               until gzip_reader.eof?
-                line = gzip_reader.gets
-
-                if line =~ %r{^[[:blank:]]*$}
-                  index += 1
-                  next
-                end
-
-                pattern = %r{^(?<field>[[:graph:]]*?):[[:blank:]](?<value>.*)}
-
-                match_data = pattern.match(line)
-
-                fail if match_data.nil?
-
-                field = match_data['field']
-
-                value = match_data['value']
-
-                field = field.downcase.to_sym
-
-                packages[index] ||= {}
-                packages[index][field] = value
+                text.concat(gzip_reader.read)
               end
 
               gzip_reader.close
 
-              packages
+              Client::RFC822.read(text)
             end
 
             def self.write(manifest)

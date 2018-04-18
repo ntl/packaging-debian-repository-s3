@@ -1,3 +1,5 @@
+require 'package_repository/debian/client/controls/rfc822'
+
 require 'package_repository/debian/client/controls/architecture'
 require 'package_repository/debian/client/controls/component'
 require 'package_repository/debian/client/controls/package'
