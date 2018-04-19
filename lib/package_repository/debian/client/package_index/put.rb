@@ -42,7 +42,7 @@ module PackageRepository
             gzip_writer.write(text)
             gzip_writer.close
 
-            put_object.(object_key, compressed_text)
+            put_object.(object_key, compressed_text, acl: 'public-read')
           end
 
           def self.compress(text)

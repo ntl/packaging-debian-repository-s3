@@ -26,5 +26,13 @@ context "Package Index" do
         end
       end
     end
+
+    test "ACL is set to public read" do
+      assert put_object do
+        put? do |_, data|
+          data.acl == 'public-read'
+        end
+      end
+    end
   end
 end
