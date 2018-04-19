@@ -52,7 +52,7 @@ module PackageRepository
           end
 
           def path
-            File.join('dists', suite.to_s, component.to_s, architecture.to_s, 'Packages.gz')
+            File.join('dists', suite.to_s, component.to_s, "binary-#{architecture}", 'Packages.gz')
           end
         end
       end

@@ -17,7 +17,7 @@ context "Package Index" do
     get_object = get_package_index.get_object
 
     get_object.add(
-      "dists/#{suite}/#{component}/#{architecture}/Packages.gz",
+      "dists/#{suite}/#{component}/binary-#{architecture}/Packages.gz",
       data_source
     )
 

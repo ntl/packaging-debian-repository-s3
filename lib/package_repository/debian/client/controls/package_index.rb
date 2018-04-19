@@ -26,7 +26,7 @@ module PackageRepository
 
           module Path
             def self.example
-              "dists/#{suite}/#{component}/#{architecture}/Packages.gz"
+              "dists/#{suite}/#{component}/binary-#{architecture}/Packages.gz"
             end
 
             def self.suite
