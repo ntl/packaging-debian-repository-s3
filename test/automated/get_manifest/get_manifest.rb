@@ -7,6 +7,8 @@ context "Get Manifest" do
   get_manifest.component = component = Controls::Component.example
   get_manifest.architecture = architecture = Controls::Architecture.example
 
+  break # XXX finish
+
   manifest_path = Controls::Manifest::Path.example
 
   manifest_text = Controls::Manifest::Text.example
@@ -19,8 +21,6 @@ context "Get Manifest" do
   )
 
   get_manifest.()
-
-  break # XXX finish
 
   manifest = get_manifest.()
 

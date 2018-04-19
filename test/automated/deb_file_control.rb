@@ -1,7 +1,7 @@
 require_relative './automated_init'
 
-context "Package Control" do
-  deb_file = Controls::Package::File.example
+context "Debian File Control" do
+  deb_file = Controls::DebFile.example
 
   comment "File location: #{deb_file}"
 
@@ -12,6 +12,8 @@ context "Package Control" do
   test "Is debian package" do
     assert((File.extname(deb_file)) == '.deb')
   end
+end
+__END__
 
   context "Control Attributes" do
     read_field = proc { |field|

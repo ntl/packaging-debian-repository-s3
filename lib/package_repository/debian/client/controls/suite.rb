@@ -7,8 +7,10 @@ module PackageRepository
             'stable'
           end
 
-          def self.alternate
-            'unstable'
+          module Alternate
+            def self.example
+              'unstable'
+            end
           end
         end
       end
