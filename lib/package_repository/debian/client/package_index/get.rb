@@ -1,9 +1,11 @@
 module PackageRepository
   module Debian
     module Client
-      class Manifest
+      class PackageIndex
         class Get
-          configure :get_manifest
+          include Log::Dependency
+
+          configure :get_package_index
 
           setting :suite
           setting :component
@@ -23,10 +25,12 @@ module PackageRepository
 
           def call
             begin
-              manifest_text = get_object.(path)
+              package_index_text = get_object.(path)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
               return nil
             end
+
+            ::Transform::Read.(package_index_text, :rfc822, PackageIndex)
           end
 
           def path
