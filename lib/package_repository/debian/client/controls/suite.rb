@@ -2,17 +2,7 @@ module PackageRepository
   module Debian
     module Client
       module Controls
-        module Suite
-          def self.example
-            'stable'
-          end
-
-          module Alternate
-            def self.example
-              'unstable'
-            end
-          end
-        end
+        Suite = Packaging::Debian::Schemas::Controls::Suite
       end
     end
   end

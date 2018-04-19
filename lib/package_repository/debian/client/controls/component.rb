@@ -2,11 +2,7 @@ module PackageRepository
   module Debian
     module Client
       module Controls
-        module Component
-          def self.example
-            'some-component'
-          end
-        end
+        Component = Packaging::Debian::Schemas::Controls::Component
       end
     end
   end
