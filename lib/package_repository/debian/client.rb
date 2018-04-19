@@ -8,3 +8,4 @@ require 'packaging/debian/schemas'
 
 require 'package_repository/debian/client/package_index'
 require 'package_repository/debian/client/package_index/get'
+require 'package_repository/debian/client/package_index/put'
