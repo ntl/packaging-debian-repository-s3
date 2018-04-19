@@ -10,16 +10,16 @@ context "Package Index" do
 
     package_index_path = Controls::PackageIndex::Path.example
 
-    package_index_text = Controls::PackageIndex::Text.example
+    compressed_text = Controls::PackageIndex::Text::GZip.example
+
+    data_source = StringIO.new(compressed_text)
 
     get_object = get_package_index.get_object
 
     get_object.add(
       "dists/#{suite}/#{component}/#{architecture}/Packages.gz",
-      package_index_text
+      data_source
     )
-
-    get_package_index.()
 
     package_index = get_package_index.()
 

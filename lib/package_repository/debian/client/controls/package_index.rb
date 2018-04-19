@@ -11,6 +11,7 @@ module PackageRepository
                 text = Text.example
 
                 compressed_text = String.new
+                compressed_text.encode('ASCII-8BIT')
 
                 stringio = StringIO.new(compressed_text)
 

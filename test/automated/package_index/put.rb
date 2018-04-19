@@ -14,20 +14,15 @@ context "Package Index" do
 
     put_object = put_package_index.put_object
 
-    put_text = String.new
+    put_package_index.(package_index)
 
-    put_package_index.(package_index, put_text)
-
-    test "Data is compressed" do
-      assert(put_text == Controls::PackageIndex::Text::GZip.example)
-    end
-
-    test "Index is uploaded to repository" do
+    test "Index is compressed and uploaded to repository" do
+      control_text = Controls::PackageIndex::Text::GZip.example
       control_path = Controls::PackageIndex::Path.example
 
       assert put_object do
-        put? do |object_key|
-          object_key == control_path
+        put? do |object_key, data|
+          object_key == control_path && data.data_source == control_text
         end
       end
     end

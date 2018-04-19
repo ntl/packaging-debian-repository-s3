@@ -1,4 +1,7 @@
+require 'aws/s3/client/controls'
 require 'packaging/debian/schemas/controls'
+
+require 'package_repository/debian/client/controls/s3_bucket'
 
 require 'package_repository/debian/client/controls/architecture'
 require 'package_repository/debian/client/controls/component'

@@ -23,12 +23,23 @@ module PackageRepository
             instance
           end
 
+          def self.call
+            instance = build
+            instance.()
+          end
+
           def call
             begin
-              package_index_text = get_object.(path)
+              data_source = get_object.(path)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
               return nil
             end
+
+            gzip_reader = ::Zlib::GzipReader.new(data_source)
+
+            package_index_text = gzip_reader.read
+
+            gzip_reader.close
 
             ::Transform::Read.(package_index_text, :rfc822, PackageIndex)
           end

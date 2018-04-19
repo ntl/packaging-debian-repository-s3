@@ -23,18 +23,26 @@ module PackageRepository
             instance
           end
 
-          def call(package_index, put_text=nil)
+          def self.call(package_index)
+            instance = build
+            instance.(package_index)
+          end
+
+          def call(package_index)
             text = ::Transform::Write.(package_index, :rfc822)
 
             object_key = path
 
-            stringio = StringIO.new(put_text)
+            compressed_text = String.new
+            compressed_text.encode('ASCII-8BIT')
+
+            stringio = StringIO.new(compressed_text)
 
             gzip_writer = ::Zlib::GzipWriter.new(stringio)
             gzip_writer.write(text)
             gzip_writer.close
 
-            put_object.(object_key, gzip_writer)
+            put_object.(object_key, compressed_text)
           end
 
           def self.compress(text)
