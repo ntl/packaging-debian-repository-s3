@@ -8,6 +8,7 @@ module Packaging
           configure :put_release
 
           setting :suite
+          setting :gpg_password
 
           dependency :put_object, AWS::S3::Client::Object::Put
 
@@ -16,6 +17,7 @@ module Packaging
 
             # XXX Settings
             self.suite = Controls::Suite.example
+            self.gpg_password = Controls::GPG::Password.example
             # /XXX
           end
 
@@ -48,9 +50,10 @@ module Packaging
                 --clearsign #{tmpfile.path}
             )
 
-            password = 'password'
-
-            signed_text, stderr, status = Open3.capture3(*gpg_command, stdin_data: password)
+            signed_text, stderr, status = Open3.capture3(
+              *gpg_command,
+              stdin_data: gpg_password
+            )
 
             File.write('tmp/InRelease', signed_text)
 

@@ -39,7 +39,7 @@ module Packaging
 
                 signed_text, status = Open3.capture2e(
                   *gpg_command,
-                  stdin_data: password
+                  stdin_data: gpg_password
                 )
 
                 status.success? or fail "Could not sign release file"
@@ -49,8 +49,8 @@ module Packaging
                 signed_text
               end
 
-              def self.password
-                'password'
+              def self.gpg_password
+                GPG::Password.example
               end
             end
           end

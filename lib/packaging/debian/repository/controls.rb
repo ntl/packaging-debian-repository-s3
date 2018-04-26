@@ -8,6 +8,8 @@ require 'packaging/debian/repository/controls/component'
 require 'packaging/debian/repository/controls/distribution'
 require 'packaging/debian/repository/controls/suite'
 
+require 'packaging/debian/repository/controls/gpg'
+
 require 'packaging/debian/repository/controls/package'
 require 'packaging/debian/repository/controls/package/contents'
 
