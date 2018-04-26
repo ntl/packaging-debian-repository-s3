@@ -55,18 +55,18 @@ module Packaging
               stdin_data: gpg_password
             )
 
-            File.write('tmp/InRelease', signed_text)
+            ::File.write('tmp/InRelease', signed_text)
 
             object_key = path
 
             put_object.(object_key, signed_text, acl: 'public-read')
 
           ensure
-            File.unlink(tmpfile)
+            ::File.unlink(tmpfile)
           end
 
           def path
-            File.join('dists', suite.to_s, 'InRelease')
+            ::File.join('dists', suite.to_s, 'InRelease')
           end
         end
       end

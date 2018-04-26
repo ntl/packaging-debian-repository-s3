@@ -40,7 +40,7 @@ module Packaging
                   signed_text
 
                 ensure
-                  File.unlink(file.path)
+                  ::File.unlink(file.path)
                 end
               end
 
@@ -57,17 +57,17 @@ module Packaging
                       #{file.path}
                   )
 
-                  unsigned_text, _, status = Open3.capture3(
+                  unsigned_text, stderr, status = Open3.capture3(
                     *gpg_command,
                     stdin_data: Password.example
                   )
 
-                  status.success? or fail "Could not remove signature"
+                  status.success? or fail "Could not remove signature (Stderr: #{stderr.inspect})"
 
                   unsigned_text
 
                 ensure
-                  File.unlink(file.path)
+                  ::File.unlink(file.path)
                 end
               end
             end
