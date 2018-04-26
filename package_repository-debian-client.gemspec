@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name = 'package_repository-debian-client'
+  s.name = 'packaging-debian-repository'
   s.version = '0.0.0.0'
-  s.summary = 'Client library for uploading and querying debian repositories'
+  s.summary = 'Library for uploading and querying debian repositories'
   s.description = ' '
 
   s.authors = ['BTC Labs']
   s.email = ' '
-  s.homepage = 'https://github.com/btc-labs/package-repository-debian-client'
+  s.homepage = 'https://github.com/btc-labs/packaging-debian-repository'
   s.licenses = ['Proprietary']
 
   s.require_paths = ['lib']

@@ -1,4 +1,6 @@
+require 'open3'
 require 'rubygems'
+
 require 'aws/s3/client'
 
 require 'configure'; Configure.activate
@@ -11,4 +13,5 @@ require 'package_repository/debian/client/package_index/get'
 require 'package_repository/debian/client/package_index/put'
 
 require 'package_repository/debian/client/release'
+#require 'package_repository/debian/client/release/put'
 require 'package_repository/debian/client/release/put'

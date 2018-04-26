@@ -15,6 +15,12 @@ module PackageRepository
 
           def configure
             AWS::S3::Client::Object::Put.configure(self)
+
+            # XXX Settings
+            self.suite = Controls::Suite.example
+            self.component = Controls::Component.example
+            self.architecture = 'amd64' # Controls::Architecture.example
+            # /XXX Settings
           end
 
           def self.build
@@ -30,6 +36,8 @@ module PackageRepository
 
           def call(package_index)
             text = ::Transform::Write.(package_index, :rfc822)
+
+            File.write('tmp/Packages', text)
 
             object_key = path
 
