@@ -8,6 +8,8 @@ require 'settings'; Settings.activate
 
 require 'packaging/debian/schemas'
 
+require 'packaging/debian/repository/settings'
+
 require 'packaging/debian/repository/package_index'
 require 'packaging/debian/repository/package_index/get'
 require 'packaging/debian/repository/package_index/put'
