@@ -1,4 +1,4 @@
-require_relative '../automated_init'
+require_relative '../../automated_init'
 
 context "Release" do
   context "Put" do
@@ -15,7 +15,7 @@ context "Release" do
     put_release.(release)
 
     test "Release is uploaded to repository" do
-      control_text = Controls::Release::Text.example
+      control_text = Controls::Release::Text::Signed.example
       control_path = Controls::Release::Path.example
 
       assert put_object do

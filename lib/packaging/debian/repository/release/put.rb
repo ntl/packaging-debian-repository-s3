@@ -56,7 +56,7 @@ module Packaging
 
             object_key = path
 
-            put_object.(object_key, text, acl: 'public-read')
+            put_object.(object_key, signed_text, acl: 'public-read')
           end
 
           def path
