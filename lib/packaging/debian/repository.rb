@@ -8,10 +8,10 @@ require 'settings'; Settings.activate
 
 require 'packaging/debian/schemas'
 
-require 'package_repository/debian/client/package_index'
-require 'package_repository/debian/client/package_index/get'
-require 'package_repository/debian/client/package_index/put'
+require 'packaging/debian/repository/package_index'
+require 'packaging/debian/repository/package_index/get'
+require 'packaging/debian/repository/package_index/put'
 
-require 'package_repository/debian/client/release'
-#require 'package_repository/debian/client/release/put'
-require 'package_repository/debian/client/release/put'
+require 'packaging/debian/repository/release'
+#require 'packaging/debian/repository/release/put'
+require 'packaging/debian/repository/release/put'
