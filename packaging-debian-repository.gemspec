@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'evt-transform'
 
   s.add_runtime_dependency 'aws-s3-client'
-  s.add_runtime_dependency 'packaging-debian-schemas'
+  #s.add_runtime_dependency 'packaging-debian-schemas'
+  #s.add_runtime_dependency 'packaging-debian-package'
 
   s.add_development_dependency 'test_bench'
 end
