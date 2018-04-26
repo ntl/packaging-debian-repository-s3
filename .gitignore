@@ -5,6 +5,7 @@
 /*.tar.gz
 /settings
 /tmp
+/keyring/random_seed
 .DS_store
 .archive
 script
