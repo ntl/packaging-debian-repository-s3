@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       module Controls
         module Distribution
           def self.example

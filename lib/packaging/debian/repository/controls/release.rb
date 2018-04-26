@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       module Controls
         Release = Packaging::Debian::Schemas::Controls::Release
 

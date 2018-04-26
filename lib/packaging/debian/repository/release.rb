@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       Release = Packaging::Debian::Schemas::Release
     end
   end

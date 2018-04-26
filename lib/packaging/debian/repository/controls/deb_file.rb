@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       module Controls
         module DebFile
           def self.example(package: nil, version: nil, contents: nil, control_file_text: nil)

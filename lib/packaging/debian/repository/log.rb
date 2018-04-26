@@ -1,9 +1,10 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       class Log < ::Log
         def tag!(tags)
-          tags << :package_repository_debian_client
+          tags << :packaging_debian_repository
+          tags << :packaging
           tags << :libraries
           tags << :verbose
         end

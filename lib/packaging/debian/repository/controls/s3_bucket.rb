@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       module Controls
         S3Bucket = ::AWS::S3::Client::Controls::Bucket
       end

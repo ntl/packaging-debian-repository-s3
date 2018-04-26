@@ -11,4 +11,4 @@ require 'pp'
 
 require 'packaging/debian/repository/controls'
 
-include PackageRepository::Debian::Client
+include Packaging::Debian::Repository

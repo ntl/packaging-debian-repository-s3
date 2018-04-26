@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       PackageIndex = Packaging::Debian::Schemas::Repository::PackageIndex
     end
   end

@@ -1,6 +1,6 @@
-module PackageRepository
+module Packaging
   module Debian
-    module Client
+    module Repository
       class PackageIndex
         class Put
           include Log::Dependency
