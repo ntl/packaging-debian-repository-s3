@@ -16,9 +16,9 @@ module Packaging
             settings ||= Settings.build
             namespace = Array(namespace)
 
-            AWS::S3::Client::Object::Put.configure(self)
-
             settings.configure(self, *namespace)
+
+            AWS::S3::Client::Object::Put.configure(self)
           end
 
           def self.build
@@ -35,9 +35,16 @@ module Packaging
           def call(release)
             text = ::Transform::Write.(release, :rfc822)
 
-            tmpfile = Tempfile.new('packaging-repository-sign-release')
-            tmpfile.write(text)
-            tmpfile.close
+            infile = Tempfile.new('packaging-repository-sign-release-in')
+            infile.write(text)
+            infile.close
+
+            outfile = Tempfile.new('packaging-repository-sign-release-out')
+
+            outfile_path = outfile.path
+
+            outfile.close
+            outfile.unlink
 
             gpg_command = %W(
               gpg
@@ -46,14 +53,19 @@ module Packaging
                 --sign
                 --pinentry-mode loopback
                 --passphrase-fd 0
-                --output -
-                --clearsign #{tmpfile.path}
+                --output #{outfile_path}
+                --clearsign #{infile.path}
             )
 
-            signed_text, stderr, status = Open3.capture3(
-              *gpg_command,
-              stdin_data: gpg_password
+            stdin = StringIO.new("#{gpg_password}\n")
+
+            ShellCommand::Execute.(
+              gpg_command,
+              stdin: stdin,
+              logger: logger
             )
+
+            signed_text = ::File.read(outfile_path)
 
             ::File.write('tmp/InRelease', signed_text)
 
@@ -62,7 +74,7 @@ module Packaging
             put_object.(object_key, signed_text, acl: 'public-read')
 
           ensure
-            ::File.unlink(tmpfile)
+            ::File.unlink(infile.path)
           end
 
           def path

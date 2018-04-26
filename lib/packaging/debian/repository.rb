@@ -7,7 +7,9 @@ require 'configure'; Configure.activate
 require 'settings'; Settings.activate
 
 require 'packaging/debian/schemas'
+require 'packaging/debian/package'
 
+require 'packaging/debian/repository/log'
 require 'packaging/debian/repository/settings'
 
 require 'packaging/debian/repository/package_index'
