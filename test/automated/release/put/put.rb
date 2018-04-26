@@ -15,12 +15,14 @@ context "Release" do
     put_release.(release)
 
     test "Release is uploaded to repository" do
-      control_text = Controls::Release::Text::Signed.example
+      control_text = Controls::Release::Text.example
       control_path = Controls::Release::Path.example
 
       assert put_object do
         put? do |object_key, data|
-          object_key == control_path && data.data_source == control_text
+          unsigned_data = Controls::GPG::Clearsign::Signature::Remove.(data.data_source)
+
+          object_key == control_path && unsigned_data == control_text
         end
       end
     end

@@ -35,7 +35,7 @@ module Packaging
           def call(release)
             text = ::Transform::Write.(release, :rfc822)
 
-            tmpfile = File.open('tmp/Release', 'w')
+            tmpfile = Tempfile.new('packaging-repository-sign-release')
             tmpfile.write(text)
             tmpfile.close
 
@@ -60,6 +60,9 @@ module Packaging
             object_key = path
 
             put_object.(object_key, signed_text, acl: 'public-read')
+
+          ensure
+            File.unlink(tmpfile)
           end
 
           def path
