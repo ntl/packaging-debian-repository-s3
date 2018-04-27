@@ -34,9 +34,9 @@ module Packaging
           end
 
           def call(package_index)
-            text = ::Transform::Write.(package_index, :rfc822)
+            logger.trace { "Putting package index (Path: #{path.inspect})" }
 
-            ::File.write('tmp/Packages', text)
+            text = ::Transform::Write.(package_index, :rfc822)
 
             object_key = path
 
@@ -50,16 +50,18 @@ module Packaging
             gzip_writer.close
 
             put_object.(object_key, compressed_text, acl: 'public-read')
-          end
 
-          def self.compress(text)
-            compressed_text = String.new
-
-            compressed_text
+            logger.info { "Put package index done (Path: #{path.inspect})" }
           end
 
           def path
-            ::File.join('dists', suite.to_s, component.to_s, "binary-#{architecture}", 'Packages.gz')
+            ::File.join(
+              'dists',
+              suite.to_s,
+              component.to_s,
+              "binary-#{architecture}",
+              'Packages.gz'
+            )
           end
         end
       end

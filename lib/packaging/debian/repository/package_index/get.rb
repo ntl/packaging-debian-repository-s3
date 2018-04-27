@@ -29,6 +29,8 @@ module Packaging
           end
 
           def call
+            logger.trace { "Getting package index (Path: #{path.inspect})" }
+
             begin
               data_source = get_object.(path)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
@@ -41,11 +43,25 @@ module Packaging
 
             gzip_reader.close
 
-            ::Transform::Read.(package_index_text, :rfc822, PackageIndex)
+            package_index = ::Transform::Read.(
+              package_index_text,
+              :rfc822,
+              PackageIndex
+            )
+
+            logger.info { "Get package index done (Path: #{path.inspect})" }
+
+            package_index
           end
 
           def path
-            ::File.join('dists', suite.to_s, component.to_s, "binary-#{architecture}", 'Packages.gz')
+            ::File.join(
+              'dists',
+              suite.to_s,
+              component.to_s,
+              "binary-#{architecture}",
+              'Packages.gz'
+            )
           end
         end
       end
