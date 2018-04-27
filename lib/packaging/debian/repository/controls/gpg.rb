@@ -9,6 +9,31 @@ module Packaging
             end
           end
 
+          module Text
+            def self.example
+              <<~TEXT
+              Some text
+              Some text
+              TEXT
+            end
+
+            module Signed
+              def self.example
+                text = Text.example
+
+                Clearsign::Signature::Add.(text)
+              end
+
+              module Incorrect
+                def self.example
+                  text = Signed.example
+                  text.gsub!(/Some text/, 'Other text')
+                  text
+                end
+              end
+            end
+          end
+
           module Clearsign
             module Signature
               module Add

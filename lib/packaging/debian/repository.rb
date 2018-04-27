@@ -12,6 +12,9 @@ require 'packaging/debian/package'
 require 'packaging/debian/repository/log'
 require 'packaging/debian/repository/settings'
 
+require 'packaging/debian/repository/gpg/sign'
+require 'packaging/debian/repository/gpg/verify'
+
 require 'packaging/debian/repository/package_index'
 require 'packaging/debian/repository/package_index/get'
 require 'packaging/debian/repository/package_index/put'

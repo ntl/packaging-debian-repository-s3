@@ -1,5 +1,8 @@
 require 'aws/s3/client/controls'
 require 'packaging/debian/schemas/controls'
+require 'packaging/debian/package/controls'
+
+require 'packaging/debian/repository/controls/random'
 
 require 'packaging/debian/repository/controls/s3_bucket'
 
