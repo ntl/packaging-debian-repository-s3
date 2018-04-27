@@ -13,14 +13,13 @@ module Packaging
 
           dependency :put_object, AWS::S3::Client::Object::Put
 
-          def configure
-            AWS::S3::Client::Object::Put.configure(self)
+          def configure(settings: nil, namespace: nil)
+            settings ||= Settings.build
+            namespace = Array(namespace)
 
-            # XXX Settings
-            self.suite = Controls::Suite.example
-            self.component = Controls::Component.example
-            self.architecture = 'amd64' # Controls::Architecture.example
-            # /XXX Settings
+            settings.set(self, *namespace)
+
+            AWS::S3::Client::Object::Put.configure(self)
           end
 
           def self.build
