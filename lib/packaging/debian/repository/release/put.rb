@@ -21,14 +21,14 @@ module Packaging
             AWS::S3::Client::Object::Put.configure(self)
           end
 
-          def self.build
+          def self.build(settings: nil, namespace: nil)
             instance = new
-            instance.configure
+            instance.configure(settings: settings, namespace: namespace)
             instance
           end
 
-          def self.call(release)
-            instance = build
+          def self.call(release, settings: nil, namespace: nil)
+            instance = build(settings: settings, namespace: namespace)
             instance.(release)
           end
 
