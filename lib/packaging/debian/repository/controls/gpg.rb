@@ -46,28 +46,20 @@ module Packaging
 
               module Remove
                 def self.call(text)
-                  file = Tempfile.new('clearsign-signature-remove')
-                  file.write(text)
-                  file.close
-
                   gpg_command = %W(
                     gpg
                       --homedir=./keyring
                       --output -
-                      #{file.path}
                   )
 
                   unsigned_text, stderr, status = Open3.capture3(
                     *gpg_command,
-                    stdin_data: Password.example
+                    stdin_data: text
                   )
 
                   status.success? or fail "Could not remove signature (Stderr: #{stderr.inspect})"
 
                   unsigned_text
-
-                ensure
-                  ::File.unlink(file.path)
                 end
               end
             end
