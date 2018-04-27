@@ -7,61 +7,45 @@ module Packaging
 
           configure :get_package
 
-          setting :suite
-          setting :component
-          setting :architecture
-
           dependency :get_object, AWS::S3::Client::Object::Get
 
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.set(self, *namespace)
-
+          def configure
             AWS::S3::Client::Object::Get.configure(self)
           end
 
-          def self.build(settings: nil, namespace: nil)
+          def self.build
             instance = new
-            instance.configure(settings: settings, namespace: namespace)
+            instance.configure
             instance
           end
 
-          def self.call(filename, settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
+          def self.call(filename)
+            instance = build
             instance.(filename)
           end
 
           def call(filename)
-            object_key = path(filename)
+            object_key = object_key(filename)
 
-            logger.trace { "Getting package (Path: #{object_key.inspect})" }
+            logger.trace { "Getting package (Object Key: #{object_key.inspect})" }
 
             begin
-              data_source = get_object.(object_key)
+              data_stream = get_object.(object_key)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
-              logger.warn { "Package file not found (Path: #{object_key.inspect})" }
+              logger.warn { "Package file not found (Object Key: #{object_key.inspect})" }
               return nil
             end
 
-            logger.info { "Get package done (Path: #{object_key.inspect})" }
+            logger.info { "Get package done (Object Key: #{object_key.inspect})" }
 
-            data_source
+            data_stream
           end
 
-          def path(filename)
-            ::File.join(
-              'dists',
-              suite.to_s,
-              component.to_s,
-              "binary-#{architecture}",
-              filename
-            )
+          def object_key(filename)
+            ::File.join('pool', filename[0], filename)
           end
         end
       end
     end
   end
 end
-

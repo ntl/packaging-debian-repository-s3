@@ -6,24 +6,10 @@ module Packaging
 
         module Package
           module Path
-            def self.example
-              "dists/#{distribution}/#{component}/binary-#{architecture}/#{filename}"
-            end
+            def self.example(filename=nil)
+              filename ||= Package.filename
 
-            def self.filename
-              Package.filename
-            end
-
-            def self.distribution
-              Distribution.example
-            end
-
-            def self.component
-              Component.example
-            end
-
-            def self.architecture
-              Architecture.example
+              "pool/#{filename[0]}/#{filename}"
             end
           end
         end

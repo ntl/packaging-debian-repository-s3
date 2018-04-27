@@ -7,54 +7,45 @@ module Packaging
 
           configure :put_package
 
-          setting :suite
-          setting :component
-          setting :architecture
-
           dependency :put_object, AWS::S3::Client::Object::Put
 
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.configure(self, *namespace)
-
+          def configure
             AWS::S3::Client::Object::Put.configure(self)
           end
 
-          def self.build(settings: nil, namespace: nil)
+          def self.build
             instance = new
-            instance.configure(settings: settings, namespace: namespace)
+            instance.configure
             instance
           end
 
-          def self.call(package, settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
+          def self.call(package)
+            instance = build
             instance.(package)
           end
 
-          def call(package)
-            filename = File.basename(package)
-
-            object_key = path(filename)
-
-            logger.trace { "Putting package (Path: #{object_key.inspect})" }
-
-            File.open(package, 'r') do |data_stream|
-              put_object.(object_key, data_stream, acl: 'public-read')
+          def call(data_stream, filename=nil)
+            if data_stream.respond_to?(:path)
+              filename ||= ::File.basename(data_stream.path)
             end
 
-            logger.info { "Put package done (Path: #{object_key.inspect})" }
+            if filename.nil?
+              error_message = "Filename not supplied and could not be inferred (Data Stream: #{data_stream.inspect})"
+              logger.error { error_message }
+              raise ArgumentError, error_message
+            end
+
+            object_key = object_key(filename)
+
+            logger.trace { "Putting package (Object Key: #{object_key.inspect})" }
+
+            put_object.(object_key, data_stream, acl: 'public-read')
+
+            logger.info { "Put package done (Object Key: #{object_key.inspect})" }
           end
 
-          def path(filename)
-            ::File.join(
-              'dists',
-              suite.to_s,
-              component.to_s,
-              "binary-#{architecture}",
-              filename
-            )
+          def object_key(filename)
+            ::File.join('pool', filename[0], filename)
           end
         end
       end
