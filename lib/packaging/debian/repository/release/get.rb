@@ -32,9 +32,12 @@ module Packaging
           end
 
           def call
+            logger.trace { "Getting release (Path: #{path.inspect})" }
+
             begin
               data_source = get_object.(path)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
+              logger.warn { "Release file not found (Path: #{path.inspect})" }
               return nil
             end
 
@@ -42,7 +45,11 @@ module Packaging
 
             text << data_source.read until data_source.eof?
 
-            ::Transform::Read.(text, :rfc822_signed, Release)
+            release = ::Transform::Read.(text, :rfc822_signed, Release)
+
+            logger.info { "Get release done (Path: #{path.inspect})" }
+
+            release
           end
 
           def path

@@ -33,6 +33,8 @@ module Packaging
           end
 
           def call(release)
+            logger.trace { "Putting release (Path: #{path.inspect})" }
+
             signed_text = ::Transform::Write.(release, :rfc822_signed)
 
             data_stream = StringIO.new(signed_text)
@@ -40,6 +42,8 @@ module Packaging
             object_key = path
 
             put_object.(object_key, data_stream, acl: 'public-read')
+
+            logger.trace { "Put release done (Path: #{path.inspect})" }
           end
 
           def path
