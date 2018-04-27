@@ -26,4 +26,6 @@ require 'packaging/debian/repository/package_index/get'
 require 'packaging/debian/repository/package_index/put'
 
 require 'packaging/debian/repository/package/get'
+require 'packaging/debian/repository/package/get/substitute'
 require 'packaging/debian/repository/package/put'
+require 'packaging/debian/repository/package/put/substitute'
