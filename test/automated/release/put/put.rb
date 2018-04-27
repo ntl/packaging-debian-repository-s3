@@ -5,6 +5,7 @@ context "Release" do
     release = Controls::Release.example
 
     put_release = Release::Put.new
+    put_release.gpg_password = Controls::GPG::Password.example
 
     put_release.suite = suite = Controls::Suite.example
 
