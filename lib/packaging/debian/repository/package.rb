@@ -1,8 +1,7 @@
 module Packaging
   module Debian
     module Repository
-      module Controls
-        Random = Debian::Package::Controls::Random
+      module Package
       end
     end
   end
