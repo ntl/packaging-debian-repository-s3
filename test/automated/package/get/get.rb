@@ -6,18 +6,13 @@ context "Package" do
 
     get_package = Package::Get.new
 
-    get_package.suite = suite = Controls::Suite.example
-    get_package.component = component = Controls::Component.example
-    get_package.architecture = architecture = Controls::Architecture.example
-
     control_data = 'some-data'
     data_source = StringIO.new(control_data)
 
+    object_key = Controls::Package::Path.example(filename)
+
     get_object = get_package.get_object
-    get_object.add(
-      "dists/#{suite}/#{component}/binary-#{architecture}/#{filename}",
-      data_source
-    )
+    get_object.add(object_key, data_source)
 
     data_stream = get_package.(filename)
 
