@@ -1,11 +1,11 @@
 module Packaging
   module Debian
     module Repository
-      class PackageIndex
+      module Package
         class Get
           include Log::Dependency
 
-          configure :get_package_index
+          configure :get_package
 
           setting :suite
           setting :component
@@ -28,43 +28,35 @@ module Packaging
             instance
           end
 
-          def self.call(settings: nil, namespace: nil)
+          def self.call(filename, settings: nil, namespace: nil)
             instance = build(settings: settings, namespace: namespace)
-            instance.()
+            instance.(filename)
           end
 
-          def call
-            logger.trace { "Getting package index (Path: #{path.inspect})" }
+          def call(filename)
+            object_key = path(filename)
+
+            logger.trace { "Getting package (Path: #{object_key.inspect})" }
 
             begin
-              data_source = get_object.(path)
+              data_source = get_object.(object_key)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
-              logger.warn { "Package index file not found (Path: #{path.inspect})" }
+              logger.warn { "Package file not found (Path: #{object_key.inspect})" }
               return nil
             end
 
-            compressed_text = String.new
+            logger.info { "Get package done (Path: #{object_key.inspect})" }
 
-            compressed_text << data_source.read until data_source.eof?
-
-            package_index = ::Transform::Read.(
-              compressed_text,
-              :rfc822_compressed,
-              PackageIndex
-            )
-
-            logger.info { "Get package index done (Path: #{path.inspect})" }
-
-            package_index
+            data_source
           end
 
-          def path
+          def path(filename)
             ::File.join(
               'dists',
               suite.to_s,
               component.to_s,
               "binary-#{architecture}",
-              'Packages.gz'
+              filename
             )
           end
         end
@@ -72,3 +64,4 @@ module Packaging
     end
   end
 end
+
