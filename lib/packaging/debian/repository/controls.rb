@@ -14,10 +14,5 @@ require 'packaging/debian/repository/controls/suite'
 require 'packaging/debian/repository/controls/gpg'
 
 require 'packaging/debian/repository/controls/package'
-require 'packaging/debian/repository/controls/package/contents'
-
 require 'packaging/debian/repository/controls/package_index'
-
 require 'packaging/debian/repository/controls/release'
-
-require 'packaging/debian/repository/controls/deb_file'
