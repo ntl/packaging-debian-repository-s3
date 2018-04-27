@@ -25,6 +25,5 @@ require 'packaging/debian/repository/package_index/transform'
 require 'packaging/debian/repository/package_index/get'
 require 'packaging/debian/repository/package_index/put'
 
-require 'packaging/debian/repository/package'
 require 'packaging/debian/repository/package/get'
 require 'packaging/debian/repository/package/put'
