@@ -34,6 +34,7 @@ module Packaging
               gpg
                 --homedir=./keyring
                 --armor
+                --batch
                 --sign
                 --pinentry-mode loopback
                 --passphrase-fd 0
