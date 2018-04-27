@@ -1,30 +1,23 @@
 require_relative '../../automated_init'
 
-context "Package Index" do
+context "Release" do
   context "Get" do
-    get_package_index = PackageIndex::Get.new
+    get_release = Release::Get.new
 
-    get_package_index.suite = suite = Controls::Suite.example
-    get_package_index.component = component = Controls::Component.example
-    get_package_index.architecture = architecture = Controls::Architecture.example
+    get_release.suite = suite = Controls::Suite.example
 
-    package_index_path = Controls::PackageIndex::Path.example
+    release_path = Controls::Release::Path.example
 
-    compressed_text = Controls::PackageIndex::Text::GZip.example
+    signed_text = Controls::Release::Text::Signed.example
+    data_source = StringIO.new(signed_text)
 
-    data_source = StringIO.new(compressed_text)
+    get_object = get_release.get_object
+    get_object.add(release_path, data_source)
 
-    get_object = get_package_index.get_object
+    release = get_release.()
 
-    get_object.add(
-      "dists/#{suite}/#{component}/binary-#{architecture}/Packages.gz",
-      data_source
-    )
-
-    package_index = get_package_index.()
-
-    test "Returns index" do
-      assert(package_index == Controls::PackageIndex.example)
+    test "Returns release" do
+      assert(release == Controls::Release.example)
     end
   end
 end
