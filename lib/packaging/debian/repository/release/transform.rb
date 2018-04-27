@@ -4,7 +4,7 @@ module Packaging
       class Release
         module Transform
           def self.rfc822_signed
-            Signed
+            Signed.build
           end
 
           class Signed

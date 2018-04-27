@@ -33,48 +33,13 @@ module Packaging
           end
 
           def call(release)
-            text = ::Transform::Write.(release, :rfc822)
+            signed_text = ::Transform::Write.(release, :rfc822_signed)
 
-            infile = Tempfile.new('packaging-repository-sign-release-in')
-            infile.write(text)
-            infile.close
-
-            outfile = Tempfile.new('packaging-repository-sign-release-out')
-
-            outfile_path = outfile.path
-
-            outfile.close
-            outfile.unlink
-
-            gpg_command = %W(
-              gpg
-                --homedir=./keyring
-                --armor
-                --sign
-                --pinentry-mode loopback
-                --passphrase-fd 0
-                --output #{outfile_path}
-                --clearsign #{infile.path}
-            )
-
-            stdin = StringIO.new("#{gpg_password}\n")
-
-            ShellCommand::Execute.(
-              gpg_command,
-              stdin: stdin,
-              logger: logger
-            )
-
-            signed_text = ::File.read(outfile_path)
-
-            ::File.write('tmp/InRelease', signed_text)
+            data_stream = StringIO.new(signed_text)
 
             object_key = path
 
-            put_object.(object_key, signed_text, acl: 'public-read')
-
-          ensure
-            ::File.unlink(infile.path)
+            put_object.(object_key, data_stream, acl: 'public-read')
           end
 
           def path

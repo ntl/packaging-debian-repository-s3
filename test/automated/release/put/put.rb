@@ -21,7 +21,7 @@ context "Release" do
 
       assert put_object do
         put? do |object_key, data|
-          unsigned_data = Controls::GPG::Clearsign::Signature::Remove.(data.data_source)
+          unsigned_data = Controls::GPG::Clearsign::Signature::Remove.(data.data_source.string)
 
           object_key == control_path && unsigned_data == control_text
         end
