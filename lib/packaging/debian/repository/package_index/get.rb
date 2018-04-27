@@ -37,15 +37,13 @@ module Packaging
               return nil
             end
 
-            gzip_reader = ::Zlib::GzipReader.new(data_source)
+            compressed_text = String.new
 
-            package_index_text = gzip_reader.read
-
-            gzip_reader.close
+            compressed_text << data_source.read until data_source.eof?
 
             package_index = ::Transform::Read.(
-              package_index_text,
-              :rfc822,
+              compressed_text,
+              :rfc822_compressed,
               PackageIndex
             )
 

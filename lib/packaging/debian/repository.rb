@@ -16,6 +16,7 @@ require 'packaging/debian/repository/gpg/sign'
 require 'packaging/debian/repository/gpg/verify'
 
 require 'packaging/debian/repository/package_index'
+require 'packaging/debian/repository/package_index/transform'
 require 'packaging/debian/repository/package_index/get'
 require 'packaging/debian/repository/package_index/put'
 

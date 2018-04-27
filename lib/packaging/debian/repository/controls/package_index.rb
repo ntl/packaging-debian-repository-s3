@@ -6,7 +6,7 @@ module Packaging
 
         module PackageIndex
           module Text
-            module GZip
+            module Compressed
               def self.example
                 text = Text.example
 
@@ -22,6 +22,7 @@ module Packaging
                 compressed_text
               end
             end
+            GZip = Compressed
           end
 
           module Path

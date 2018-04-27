@@ -36,18 +36,9 @@ module Packaging
           def call(package_index)
             logger.trace { "Putting package index (Path: #{path.inspect})" }
 
-            text = ::Transform::Write.(package_index, :rfc822)
-
             object_key = path
 
-            compressed_text = String.new
-            compressed_text.encode('ASCII-8BIT')
-
-            stringio = StringIO.new(compressed_text)
-
-            gzip_writer = ::Zlib::GzipWriter.new(stringio)
-            gzip_writer.write(text)
-            gzip_writer.close
+            compressed_text = ::Transform::Write.(package_index, :rfc822_compressed)
 
             put_object.(object_key, compressed_text, acl: 'public-read')
 
