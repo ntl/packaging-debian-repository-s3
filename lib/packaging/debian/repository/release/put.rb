@@ -43,7 +43,7 @@ module Packaging
 
             put_object.(object_key, data_stream, acl: 'public-read')
 
-            logger.trace { "Put release done (Path: #{path.inspect})" }
+            logger.info { "Put release done (Path: #{path.inspect})" }
           end
 
           def path

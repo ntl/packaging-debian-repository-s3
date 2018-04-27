@@ -38,13 +38,13 @@ module Packaging
 
             object_key = path(filename)
 
-            logger.trace { "Putting release (Path: #{object_key.inspect})" }
+            logger.trace { "Putting package (Path: #{object_key.inspect})" }
 
             File.open(package, 'r') do |data_stream|
               put_object.(object_key, data_stream, acl: 'public-read')
             end
 
-            logger.trace { "Put release done (Path: #{object_key.inspect})" }
+            logger.info { "Put package done (Path: #{object_key.inspect})" }
           end
 
           def path(filename)
