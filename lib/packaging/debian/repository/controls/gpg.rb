@@ -13,7 +13,7 @@ module Packaging
             module Signature
               module Add
                 def self.call(text)
-                  text = Text.example
+                  gpg_password = Password.example
 
                   file = Tempfile.new('signed-release')
                   file.write(text)
@@ -40,7 +40,7 @@ module Packaging
                   signed_text
 
                 ensure
-                  ::File.unlink(file.path)
+                  ::File.unlink(file.path) if file
                 end
               end
 
