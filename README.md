@@ -62,12 +62,6 @@ The warning about unsafe permissions can be corrected by revoking read/write/exe
 
 Run the above `gpg --homedir=./keyring --list-keys` command again to verify that the warning has been lifted.
 
-Most of the Debian package tooling requires an ASCII formatted public key. The `--armor` option instructs `gpg` to produce "armored" (or ASCII formatted) output. The following command generates an "armored" public key, and places it in the settings directory so that it can be published to the repository.
-
-```sh
-gpg --homedir=./keyring --armor --export test.user@example.com > ./settings/repository.key.gpg
-```
-
 This public key will need to be published, and anyone wishing to add repositories signed via gpg will need to add this public key to their keychains.
 
 To locally add the public key to apt for testing, run `sudo apt-key add settings/repository.key.gpg`.
