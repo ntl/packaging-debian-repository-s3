@@ -4,9 +4,9 @@ context "Package Index" do
   context "Get" do
     get_package_index = PackageIndex::Get.new
 
-    get_package_index.suite = suite = Controls::Suite.example
-    get_package_index.component = component = Controls::Component.example
-    get_package_index.architecture = architecture = Controls::Architecture.example
+    get_package_index.distribution = Controls::Distribution.example
+    get_package_index.component = Controls::Component.example
+    get_package_index.architecture = Controls::Architecture.example
 
     package_index_path = Controls::PackageIndex::Path.example
 
@@ -16,10 +16,7 @@ context "Package Index" do
 
     get_object = get_package_index.get_object
 
-    get_object.add(
-      "dists/#{suite}/#{component}/binary-#{architecture}/Packages.gz",
-      data_source
-    )
+    get_object.add(package_index_path, data_source)
 
     package_index = get_package_index.()
 

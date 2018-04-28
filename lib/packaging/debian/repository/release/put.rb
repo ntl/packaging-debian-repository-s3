@@ -7,7 +7,7 @@ module Packaging
 
           configure :put_release
 
-          setting :suite
+          setting :distribution
           setting :gpg_password
 
           dependency :put_object, AWS::S3::Client::Object::Put
@@ -47,7 +47,7 @@ module Packaging
           end
 
           def path
-            ::File.join('dists', suite.to_s, 'InRelease')
+            ::File.join('dists', distribution.to_s, 'InRelease')
           end
         end
       end

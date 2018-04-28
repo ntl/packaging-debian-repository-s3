@@ -7,7 +7,7 @@ module Packaging
 
           configure :get_release
 
-          setting :suite
+          setting :distribution
 
           dependency :get_object, AWS::S3::Client::Object::Get
 
@@ -53,7 +53,7 @@ module Packaging
           end
 
           def path
-            ::File.join('dists', suite.to_s, 'InRelease')
+            ::File.join('dists', distribution.to_s, 'InRelease')
           end
         end
       end

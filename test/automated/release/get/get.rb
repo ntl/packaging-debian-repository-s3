@@ -4,7 +4,7 @@ context "Release" do
   context "Get" do
     get_release = Release::Get.new
 
-    get_release.suite = suite = Controls::Suite.example
+    get_release.distribution = Controls::Distribution.example
 
     release_path = Controls::Release::Path.example
 

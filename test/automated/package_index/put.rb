@@ -6,9 +6,9 @@ context "Package Index" do
 
     put_package_index = PackageIndex::Put.new
 
-    put_package_index.suite = suite = Controls::Suite.example
-    put_package_index.component = component = Controls::Component.example
-    put_package_index.architecture = architecture = Controls::Architecture.example
+    put_package_index.distribution = Controls::Distribution.example
+    put_package_index.component = Controls::Component.example
+    put_package_index.architecture = Controls::Architecture.example
 
     package_index_path = Controls::PackageIndex::Path.example
 

@@ -7,7 +7,7 @@ module Packaging
 
           configure :put_package_index
 
-          setting :suite
+          setting :distribution
           setting :component
           setting :architecture
 
@@ -48,7 +48,7 @@ module Packaging
           def path
             ::File.join(
               'dists',
-              suite.to_s,
+              distribution.to_s,
               component.to_s,
               "binary-#{architecture}",
               'Packages.gz'
