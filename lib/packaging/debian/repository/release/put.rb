@@ -27,22 +27,20 @@ module Packaging
           end
 
           def call(release)
-            logger.trace { "Putting release (Distribution: #{distribution}, Path: #{path.inspect})" }
+            logger.trace { "Putting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
             signed_text = ::Transform::Write.(release, :rfc822_signed)
 
             data_stream = StringIO.new(signed_text)
 
-            object_key = path
-
             result = put_object.(object_key, data_stream, acl: 'public-read')
 
-            logger.info { "Put release done (Distribution: #{distribution}, Path: #{path.inspect})" }
+            logger.info { "Put release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
             result
           end
 
-          def path
+          def object_key
             ::File.join('dists', distribution, 'InRelease')
           end
         end
