@@ -3,17 +3,15 @@ require_relative '../../../automated_init'
 context "Package Index" do
   context "Store" do
     context "Fetch" do
-      context "Optional Arguments" do
+      context "Optional Architecture" do
         distribution = Controls::Distribution.example
 
         store = PackageIndex::Store.new(distribution)
 
-        component = Controls::Component::Alternate.example
         architecture = Controls::Architecture::Alternate.example
 
         object_key = Controls::PackageIndex::Path.example(
           distribution: distribution,
-          component: component,
           architecture: architecture
         )
 
@@ -24,7 +22,7 @@ context "Package Index" do
 
         package_index = store.fetch
 
-        test "Returns index located by optional arguments" do
+        test "Retrieves index for given architecture" do
           refute(package_index.nil?)
         end
       end

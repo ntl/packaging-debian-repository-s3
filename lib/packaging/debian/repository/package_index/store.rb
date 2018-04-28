@@ -50,11 +50,10 @@ module Packaging
             %r{\Adists/(?<distribution>#{part})/(?<component>#{part})/binary-(?<architecture>#{part})/Packages.gz}
           end
 
-          def get(component: nil, architecture: nil)
-            component ||= self.component
+          def get(architecture: nil)
             architecture ||= self.architecture
 
-            object_key = object_key(component, architecture)
+            object_key = object_key(architecture)
 
             logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
 
@@ -90,11 +89,10 @@ module Packaging
             package_index
           end
 
-          def put(package_index, component: nil, architecture: nil)
-            component ||= self.component
+          def put(package_index, architecture: nil)
             architecture ||= self.architecture
 
-            object_key = object_key(component, architecture)
+            object_key = object_key(architecture)
 
             logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }
 
@@ -107,7 +105,7 @@ module Packaging
             result
           end
 
-          def object_key(component, architecture)
+          def object_key(architecture)
             ::File.join(
               'dists',
               distribution,
