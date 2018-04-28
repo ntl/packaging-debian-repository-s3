@@ -23,6 +23,7 @@ require 'packaging/debian/repository/release/store/substitute'
 require 'packaging/debian/repository/package_index'
 require 'packaging/debian/repository/package_index/transform'
 require 'packaging/debian/repository/package_index/store'
+require 'packaging/debian/repository/package_index/store/substitute'
 
 require 'packaging/debian/repository/package/get'
 require 'packaging/debian/repository/package/get/substitute'
