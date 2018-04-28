@@ -2,11 +2,11 @@ require 'open3'
 require 'rubygems'
 
 require 'aws/s3/client'
+require 'shell_command/execute'
 
 require 'configure'; Configure.activate
 
 require 'packaging/debian/schemas'
-require 'packaging/debian/package'
 
 require 'packaging/debian/repository/defaults'
 

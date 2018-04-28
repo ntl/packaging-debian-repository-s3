@@ -2,7 +2,7 @@ module Packaging
   module Debian
     module Repository
       module Controls
-        Random = Debian::Package::Controls::Random
+        Random = AWS::S3::Client::Controls::Random
       end
     end
   end
