@@ -79,8 +79,8 @@ module Packaging
             package_index
           end
 
-          def fetch
-            package_index = get
+          def fetch(architecture: nil)
+            package_index = get(architecture: architecture)
 
             if package_index.nil?
               package_index = PackageIndex.new

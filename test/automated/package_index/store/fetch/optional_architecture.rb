@@ -20,10 +20,10 @@ context "Package Index" do
         get_object = store.get_object
         get_object.add(object_key, data_stream)
 
-        package_index = store.fetch
+        package_index = store.fetch(architecture: architecture)
 
         test "Retrieves index for given architecture" do
-          refute(package_index.nil?)
+          assert(package_index == Controls::PackageIndex.example)
         end
       end
     end
