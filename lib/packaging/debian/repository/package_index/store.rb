@@ -5,7 +5,7 @@ module Packaging
         class Store
           include Log::Dependency
 
-          configure :get_package_index
+          configure :store
 
           attr_writer :architecture
           def architecture
