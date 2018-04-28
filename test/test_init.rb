@@ -11,4 +11,4 @@ require 'pp'
 
 require 'packaging/debian/repository/s3/controls'
 
-include Packaging::Debian::Repository
+include Packaging::Debian::Repository::S3

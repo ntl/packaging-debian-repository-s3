@@ -1,13 +1,15 @@
 module Packaging
   module Debian
     module Repository
-      module Controls
-        module Component
-          def self.example
-            Defaults.component
-          end
+      module S3
+        module Controls
+          module Component
+            def self.example
+              Defaults.component
+            end
 
-          Alternate = Schemas::Controls::Component::Alternate
+            Alternate = Schemas::Controls::Component::Alternate
+          end
         end
       end
     end

@@ -1,7 +1,9 @@
 module Packaging
   module Debian
     module Repository
-      Release = Packaging::Debian::Schemas::Release
+      module S3
+        Release = Packaging::Debian::Schemas::Release
+      end
     end
   end
 end
