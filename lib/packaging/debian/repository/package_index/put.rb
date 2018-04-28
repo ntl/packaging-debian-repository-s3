@@ -7,49 +7,44 @@ module Packaging
 
           configure :put_package_index
 
-          setting :distribution
-          setting :component
-          setting :architecture
+          initializer :distribution
 
           dependency :put_object, AWS::S3::Client::Object::Put
 
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.set(self, *namespace)
-
+          def configure
             AWS::S3::Client::Object::Put.configure(self)
           end
 
-          def self.build(settings: nil, namespace: nil)
-            instance = new
-            instance.configure(settings: settings, namespace: namespace)
+          def self.build(distribution)
+            instance = new(distribution)
+            instance.configure
             instance
           end
 
-          def self.call(package_index, settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
-            instance.(package_index)
+          def self.call(package_index, distribution, component, architecture)
+            instance = build(distribution)
+            instance.(package_index, component, architecture)
           end
 
-          def call(package_index)
-            logger.trace { "Putting package index (Path: #{path.inspect})" }
+          def call(package_index, component, architecture)
+            object_key = object_key(component, architecture)
 
-            object_key = path
+            logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }
 
             compressed_text = ::Transform::Write.(package_index, :rfc822_compressed)
 
-            put_object.(object_key, compressed_text, acl: 'public-read')
+            result = put_object.(object_key, compressed_text, acl: 'public-read')
 
-            logger.info { "Put package index done (Path: #{path.inspect})" }
+            logger.info { "Put package index done (Object Key: #{object_key.inspect})" }
+
+            result
           end
 
-          def path
+          def object_key(component, architecture)
             ::File.join(
               'dists',
-              distribution.to_s,
-              component.to_s,
+              distribution,
+              component,
               "binary-#{architecture}",
               'Packages.gz'
             )

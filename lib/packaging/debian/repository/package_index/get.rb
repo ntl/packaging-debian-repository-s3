@@ -7,39 +7,34 @@ module Packaging
 
           configure :get_package_index
 
-          setting :distribution
-          setting :component
-          setting :architecture
+          initializer :distribution
 
           dependency :get_object, AWS::S3::Client::Object::Get
 
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.set(self, *namespace)
-
+          def configure
             AWS::S3::Client::Object::Get.configure(self)
           end
 
-          def self.build(settings: nil, namespace: nil)
-            instance = new
-            instance.configure(settings: settings, namespace: namespace)
+          def self.build(distribution)
+            instance = new(distribution)
+            instance.configure
             instance
           end
 
-          def self.call(settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
-            instance.()
+          def self.call(distribution, component, architecture)
+            instance = build(distribution)
+            instance.(component, architecture)
           end
 
-          def call
-            logger.trace { "Getting package index (Path: #{path.inspect})" }
+          def call(component, architecture)
+            object_key = object_key(component, architecture)
+
+            logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
 
             begin
-              data_source = get_object.(path)
+              data_source = get_object.(object_key)
             rescue AWS::S3::Client::Object::Get::ObjectNotFound
-              logger.warn { "Package index file not found (Path: #{path.inspect})" }
+              logger.warn { "Package index file not found (Object Key: #{object_key.inspect})" }
               return nil
             end
 
@@ -53,16 +48,16 @@ module Packaging
               PackageIndex
             )
 
-            logger.info { "Get package index done (Path: #{path.inspect})" }
+            logger.info { "Get package index done (Object Key: #{object_key.inspect})" }
 
             package_index
           end
 
-          def path
+          def object_key(component, architecture)
             ::File.join(
               'dists',
-              distribution.to_s,
-              component.to_s,
+              distribution,
+              component,
               "binary-#{architecture}",
               'Packages.gz'
             )

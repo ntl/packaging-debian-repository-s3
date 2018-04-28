@@ -26,20 +26,12 @@ module Packaging
           end
 
           module Path
-            def self.example
+            def self.example(distribution: nil, component: nil, architecture: nil)
+              distribution ||= Distribution.example
+              component ||= Component.example
+              architecture ||= Architecture.example
+
               "dists/#{distribution}/#{component}/binary-#{architecture}/Packages.gz"
-            end
-
-            def self.distribution
-              Distribution.example
-            end
-
-            def self.component
-              Component.example
-            end
-
-            def self.architecture
-              Architecture.example
             end
           end
         end
