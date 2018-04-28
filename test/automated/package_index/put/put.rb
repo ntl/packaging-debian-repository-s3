@@ -6,23 +6,15 @@ context "Package Index" do
 
     put_package_index = PackageIndex::Put.new(distribution)
 
-    component = Controls::Component.example
-    architecture = Controls::Architecture.example
-
     package_index = Controls::PackageIndex.example
 
-    put_package_index.(package_index, component, architecture)
+    put_package_index.(package_index)
 
     put_object = put_package_index.put_object
 
     test "Index is compressed and uploaded to repository" do
       control_text = Controls::PackageIndex::Text::GZip.example
-
-      control_object_key = Controls::PackageIndex::Path.example(
-        distribution: distribution,
-        component: component,
-        architecture: architecture
-      )
+      control_object_key = Controls::PackageIndex::Path.example(distribution: distribution)
 
       assert put_object do
         put? do |object_key, data|

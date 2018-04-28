@@ -2,7 +2,11 @@ module Packaging
   module Debian
     module Repository
       module Controls
-        Component = Packaging::Debian::Schemas::Controls::Component
+        module Component
+          def self.example
+            Defaults.component
+          end
+        end
       end
     end
   end

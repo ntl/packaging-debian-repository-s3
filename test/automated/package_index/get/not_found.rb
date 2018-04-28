@@ -7,10 +7,7 @@ context "Package Index" do
 
       get_package_index = PackageIndex::Get.new(distribution)
 
-      component = Controls::Component.example
-      architecture = Controls::Architecture.example
-
-      package_index = get_package_index.(component, architecture)
+      package_index = get_package_index.()
 
       test "Returns nil" do
         assert(package_index.nil?)

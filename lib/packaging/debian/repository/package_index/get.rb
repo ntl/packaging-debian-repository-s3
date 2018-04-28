@@ -5,7 +5,19 @@ module Packaging
         class Get
           include Log::Dependency
 
+          include ObjectKey
+
           configure :get_package_index
+
+          attr_writer :architecture
+          def architecture
+            @architecture ||= Defaults.architecture
+          end
+
+          attr_writer :component
+          def component
+            @component ||= Defaults.component
+          end
 
           initializer :distribution
 
@@ -21,12 +33,15 @@ module Packaging
             instance
           end
 
-          def self.call(distribution, component, architecture)
+          def self.call(distribution, component: nil, architecture: nil)
             instance = build(distribution)
-            instance.(component, architecture)
+            instance.(component, architecture: architecture)
           end
 
-          def call(component, architecture)
+          def call(component: nil, architecture: nil)
+            component ||= self.component
+            architecture ||= self.architecture
+
             object_key = object_key(component, architecture)
 
             logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
@@ -51,16 +66,6 @@ module Packaging
             logger.info { "Get package index done (Object Key: #{object_key.inspect})" }
 
             package_index
-          end
-
-          def object_key(component, architecture)
-            ::File.join(
-              'dists',
-              distribution,
-              component,
-              "binary-#{architecture}",
-              'Packages.gz'
-            )
           end
         end
       end

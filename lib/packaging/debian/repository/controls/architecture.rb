@@ -2,7 +2,11 @@ module Packaging
   module Debian
     module Repository
       module Controls
-        Architecture = Packaging::Debian::Schemas::Controls::Architecture
+        module Architecture
+          def self.example
+            Defaults.architecture
+          end
+        end
       end
     end
   end
