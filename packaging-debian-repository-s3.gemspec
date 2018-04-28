@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name = 'packaging-debian-repository'
+  s.name = 'packaging-debian-repository-s3'
   s.version = '0.0.0.0'
-  s.summary = 'Library for uploading and querying debian repositories'
+  s.summary = 'Library for publishing debian packages to S3 repositories'
   s.description = ' '
 
   s.authors = ['BTC Labs']
   s.email = ' '
-  s.homepage = 'https://github.com/btc-labs/packaging-debian-repository'
+  s.homepage = 'https://github.com/btc-labs/packaging-debian-repository-s3'
   s.licenses = ['Proprietary']
 
   s.require_paths = ['lib']

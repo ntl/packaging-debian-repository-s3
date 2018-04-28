@@ -9,6 +9,6 @@ require 'test_bench'; TestBench.activate
 
 require 'pp'
 
-require 'packaging/debian/repository/controls'
+require 'packaging/debian/repository/s3/controls'
 
 include Packaging::Debian::Repository
