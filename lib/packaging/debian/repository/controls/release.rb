@@ -12,6 +12,10 @@ module Packaging
 
                 GPG::Clearsign::Signature::Add.(unsigned_text)
               end
+
+              def self.stream
+                StringIO.new(example)
+              end
             end
           end
 

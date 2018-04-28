@@ -2,17 +2,19 @@ module Packaging
   module Debian
     module Repository
       class Release
-        class Get
+        class Store
           include Log::Dependency
 
-          configure :get_release
+          configure :store
 
           initializer :distribution
 
           dependency :get_object, AWS::S3::Client::Object::Get
+          dependency :put_object, AWS::S3::Client::Object::Put
 
           def configure
             AWS::S3::Client::Object::Get.configure(self)
+            AWS::S3::Client::Object::Put.configure(self)
           end
 
           def self.build(distribution)
@@ -26,7 +28,7 @@ module Packaging
             instance.()
           end
 
-          def call
+          def get
             logger.trace { "Getting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
             begin
@@ -45,6 +47,30 @@ module Packaging
             logger.info { "Get release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
             release
+          end
+
+          def fetch
+            release = get
+
+            if release.nil?
+              release = Release.new
+            end
+
+            release
+          end
+
+          def put(release)
+            logger.trace { "Putting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+
+            signed_text = ::Transform::Write.(release, :rfc822_signed)
+
+            data_stream = StringIO.new(signed_text)
+
+            result = put_object.(object_key, data_stream, acl: 'public-read')
+
+            logger.info { "Put release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+
+            result
           end
 
           def object_key

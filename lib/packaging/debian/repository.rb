@@ -17,8 +17,7 @@ require 'packaging/debian/repository/gpg/verify'
 
 require 'packaging/debian/repository/release'
 require 'packaging/debian/repository/release/transform'
-require 'packaging/debian/repository/release/get'
-require 'packaging/debian/repository/release/put'
+require 'packaging/debian/repository/release/store'
 
 require 'packaging/debian/repository/package_index'
 require 'packaging/debian/repository/package_index/transform'
