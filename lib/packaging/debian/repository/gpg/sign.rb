@@ -5,31 +5,17 @@ module Packaging
         class Sign
           include Log::Dependency
 
-          setting :gpg_password
-
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.set(self, *namespace)
+          attr_writer :password_file
+          def password_file
+            @password_file ||= File.join('settings', 'gpg_password.txt')
           end
 
-          def self.build(settings: nil, namespace: nil)
+          def self.call(text)
             instance = new
-            instance.configure(settings: settings, namespace: namespace)
-            instance
-          end
-
-          def self.call(text, settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
             instance.(text)
           end
 
           def call(text)
-            tmpfile = Tempfile.new('gpg-clearsign-input')
-            tmpfile.write(text)
-            tmpfile.close
-
             gpg_command = %W(
               gpg
                 --homedir=./keyring
@@ -37,17 +23,15 @@ module Packaging
                 --batch
                 --sign
                 --pinentry-mode loopback
-                --passphrase-fd 0
+                --passphrase-file #{password_file}
                 --output -
-                --clearsign #{tmpfile.path}
+                --clearsign
             )
-
-            stdin = "#{gpg_password}\n"
 
             success, signed_text, exit_status = ShellCommand::Execute.(
               gpg_command,
               logger: logger,
-              stdin: stdin,
+              stdin: text,
               include: [:stdout, :exit_status]
             )
 

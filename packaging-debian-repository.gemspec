@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'evt-configure'
   s.add_runtime_dependency 'evt-schema'
-  s.add_runtime_dependency 'evt-settings'
   s.add_runtime_dependency 'evt-transform'
 
   s.add_runtime_dependency 'aws-s3-client'

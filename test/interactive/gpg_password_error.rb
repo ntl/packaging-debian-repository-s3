@@ -7,13 +7,22 @@ context "GPG" do
 
     control_text = Controls::GPG::Text.example
 
+    gpg_password = Controls::Random.unique_text
+
+    password_file = Tempfile.new
+    password_file.write(gpg_password)
+    password_file.close
+
     sign = GPG::Sign.new
-    sign.gpg_password = Controls::Random.unique_text
+    sign.password_file = password_file.path
 
     test "Raises error" do
       assert proc { sign.(control_text) } do
         raises_error?(GPG::Sign::GPGError)
       end
     end
+
+  ensure
+    password_file.unlink
   end
 end
