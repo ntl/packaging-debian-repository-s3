@@ -20,12 +20,14 @@ module Packaging
           initializer :distribution
 
           dependency :get_object, AWS::S3::Client::Object::Get
+          dependency :put_object, AWS::S3::Client::Object::Put
 
           def configure(component: nil, architecture: nil)
             self.component = component unless component.nil?
             self.architecture = architecture unless architecture.nil?
 
             AWS::S3::Client::Object::Get.configure(self)
+            AWS::S3::Client::Object::Put.configure(self)
           end
 
           def self.build(distribution_or_path)
@@ -86,6 +88,23 @@ module Packaging
             end
 
             package_index
+          end
+
+          def put(package_index, component: nil, architecture: nil)
+            component ||= self.component
+            architecture ||= self.architecture
+
+            object_key = object_key(component, architecture)
+
+            logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }
+
+            compressed_text = ::Transform::Write.(package_index, :rfc822_compressed)
+
+            result = put_object.(object_key, compressed_text, acl: 'public-read')
+
+            logger.info { "Put package index done (Object Key: #{object_key.inspect})" }
+
+            result
           end
 
           def object_key(component, architecture)

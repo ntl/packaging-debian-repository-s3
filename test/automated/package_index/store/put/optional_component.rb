@@ -1,4 +1,4 @@
-require_relative '../../automated_init'
+require_relative '../../../automated_init'
 
 context "Package Index" do
   context "Put" do
@@ -10,10 +10,10 @@ context "Package Index" do
       context "Given" do
         component = Controls::Random.unique_text
 
-        put_package_index = PackageIndex::Put.new(distribution)
-        put_package_index.(package_index, component: component)
+        store = PackageIndex::Store.new(distribution)
+        store.put(package_index, component: component)
 
-        put_object = put_package_index.put_object
+        put_object = store.put_object
 
         control_object_key = Controls::PackageIndex::Path.example(
           distribution: distribution,
@@ -32,10 +32,10 @@ context "Package Index" do
       context "Omitted" do
         default_component = Defaults.component
 
-        put_package_index = PackageIndex::Put.new(distribution)
-        put_package_index.(package_index)
+        store = PackageIndex::Store.new(distribution)
+        store.put(package_index)
 
-        put_object = put_package_index.put_object
+        put_object = store.put_object
 
         control_object_key = Controls::PackageIndex::Path.example(
           distribution: distribution,
