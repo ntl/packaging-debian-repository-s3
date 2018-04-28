@@ -21,8 +21,11 @@ module Packaging
 
                 compressed_text
               end
+
+              def self.stream
+                StringIO.new(example)
+              end
             end
-            GZip = Compressed
           end
 
           module Path

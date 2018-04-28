@@ -2,10 +2,8 @@ module Packaging
   module Debian
     module Repository
       class PackageIndex
-        class Get
+        class Store
           include Log::Dependency
-
-          include ObjectKey
 
           configure :get_package_index
 
@@ -50,12 +48,7 @@ module Packaging
             %r{\Adists/(?<distribution>#{part})/(?<component>#{part})/binary-(?<architecture>#{part})/Packages.gz}
           end
 
-          def self.call(distribution, component: nil, architecture: nil)
-            instance = build(distribution)
-            instance.(component, architecture: architecture)
-          end
-
-          def call(component: nil, architecture: nil)
+          def get(component: nil, architecture: nil)
             component ||= self.component
             architecture ||= self.architecture
 
@@ -83,6 +76,26 @@ module Packaging
             logger.info { "Get package index done (Object Key: #{object_key.inspect})" }
 
             package_index
+          end
+
+          def fetch
+            package_index = get
+
+            if package_index.nil?
+              package_index = PackageIndex.new
+            end
+
+            package_index
+          end
+
+          def object_key(component, architecture)
+            ::File.join(
+              'dists',
+              distribution,
+              component,
+              "binary-#{architecture}",
+              'Packages.gz'
+            )
           end
         end
       end

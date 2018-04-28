@@ -5,8 +5,6 @@ module Packaging
         class Put
           include Log::Dependency
 
-          include ObjectKey
-
           configure :put_package_index
 
           attr_writer :architecture
@@ -53,6 +51,16 @@ module Packaging
             logger.info { "Put package index done (Object Key: #{object_key.inspect})" }
 
             result
+          end
+
+          def object_key(component, architecture)
+            ::File.join(
+              'dists',
+              distribution,
+              component,
+              "binary-#{architecture}",
+              'Packages.gz'
+            )
           end
         end
       end

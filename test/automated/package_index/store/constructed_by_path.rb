@@ -1,7 +1,7 @@
 require_relative '../../automated_init'
 
 context "Package Index" do
-  context "Get" do
+  context "Store" do
     context "Constructed By Path" do
       distribution = Controls::Distribution::Alternate.example
       component = Controls::Component::Alternate.example
@@ -13,18 +13,18 @@ context "Package Index" do
         architecture: architecture
       )
 
-      get_package_index = PackageIndex::Get.build(path)
+      store = PackageIndex::Store.build(path)
 
       test "Distribution" do
-        assert(get_package_index.distribution == distribution)
+        assert(store.distribution == distribution)
       end
 
       test "Component" do
-        assert(get_package_index.component == component)
+        assert(store.component == component)
       end
 
       test "Architecture" do
-        assert(get_package_index.architecture == architecture)
+        assert(store.architecture == architecture)
       end
     end
   end
