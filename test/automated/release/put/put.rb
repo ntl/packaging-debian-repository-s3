@@ -1,19 +1,16 @@
-require_relative '../automated_init'
+require_relative '../../automated_init'
 
 context "Release" do
   context "Put" do
+    distribution = Controls::Distribution.example
+    release_path = Controls::Release::Path.example(distribution)
+
     release = Controls::Release.example
 
-    put_release = Release::Put.new
-    put_release.gpg_password = Controls::GPG::Password.example
-
-    put_release.distribution = Controls::Distribution.example
-
-    release_path = Controls::Release::Path.example
+    put_release = Release::Put.new(distribution)
+    put_release.(release)
 
     put_object = put_release.put_object
-
-    put_release.(release)
 
     test "Release is uploaded to repository" do
       control_text = Controls::Release::Text.example

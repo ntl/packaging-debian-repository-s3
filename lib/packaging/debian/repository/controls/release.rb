@@ -16,12 +16,10 @@ module Packaging
           end
 
           module Path
-            def self.example
-              "dists/#{distribution}/InRelease"
-            end
+            def self.example(distribution=nil)
+              distribution ||= Distribution.example
 
-            def self.distribution
-              Distribution.example
+              "dists/#{distribution}/InRelease"
             end
           end
         end

@@ -7,33 +7,27 @@ module Packaging
 
           configure :put_release
 
-          setting :distribution
-          setting :gpg_password
+          initializer :distribution
 
           dependency :put_object, AWS::S3::Client::Object::Put
 
-          def configure(settings: nil, namespace: nil)
-            settings ||= Settings.build
-            namespace = Array(namespace)
-
-            settings.configure(self, *namespace)
-
+          def configure
             AWS::S3::Client::Object::Put.configure(self)
           end
 
-          def self.build(settings: nil, namespace: nil)
-            instance = new
-            instance.configure(settings: settings, namespace: namespace)
+          def self.build(distribution)
+            instance = new(distribution)
+            instance.configure
             instance
           end
 
-          def self.call(release, settings: nil, namespace: nil)
-            instance = build(settings: settings, namespace: namespace)
+          def self.call(release, distribution)
+            instance = build(distribution)
             instance.(release)
           end
 
           def call(release)
-            logger.trace { "Putting release (Path: #{path.inspect})" }
+            logger.trace { "Putting release (Distribution: #{distribution}, Path: #{path.inspect})" }
 
             signed_text = ::Transform::Write.(release, :rfc822_signed)
 
@@ -41,13 +35,15 @@ module Packaging
 
             object_key = path
 
-            put_object.(object_key, data_stream, acl: 'public-read')
+            result = put_object.(object_key, data_stream, acl: 'public-read')
 
-            logger.info { "Put release done (Path: #{path.inspect})" }
+            logger.info { "Put release done (Distribution: #{distribution}, Path: #{path.inspect})" }
+
+            result
           end
 
           def path
-            ::File.join('dists', distribution.to_s, 'InRelease')
+            ::File.join('dists', distribution, 'InRelease')
           end
         end
       end

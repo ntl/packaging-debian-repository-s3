@@ -2,11 +2,11 @@ require_relative '../../automated_init'
 
 context "Release" do
   context "Get" do
-    get_release = Release::Get.new
+    distribution = Controls::Distribution.example
 
-    get_release.distribution = Controls::Distribution.example
+    get_release = Release::Get.new(distribution)
 
-    release_path = Controls::Release::Path.example
+    release_path = Controls::Release::Path.example(distribution)
 
     signed_text = Controls::Release::Text::Signed.example
     data_source = StringIO.new(signed_text)

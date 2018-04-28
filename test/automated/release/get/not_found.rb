@@ -3,7 +3,9 @@ require_relative '../../automated_init'
 context "Release" do
   context "Get" do
     context "Not Found" do
-      get_release = Release::Get.new
+      distribution = Controls::Distribution.example
+
+      get_release = Release::Get.new(distribution)
 
       release = get_release.()
 
