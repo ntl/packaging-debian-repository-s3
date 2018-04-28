@@ -6,6 +6,8 @@ module Packaging
           def self.example
             Defaults.component
           end
+
+          Alternate = Schemas::Controls::Component::Alternate
         end
       end
     end

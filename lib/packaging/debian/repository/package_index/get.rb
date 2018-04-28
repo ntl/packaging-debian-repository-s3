@@ -23,14 +23,31 @@ module Packaging
 
           dependency :get_object, AWS::S3::Client::Object::Get
 
-          def configure
+          def configure(component: nil, architecture: nil)
+            self.component = component unless component.nil?
+            self.architecture = architecture unless architecture.nil?
+
             AWS::S3::Client::Object::Get.configure(self)
           end
 
-          def self.build(distribution)
+          def self.build(distribution_or_path)
+            if match_data = path_pattern.match(distribution_or_path)
+              distribution = match_data[:distribution]
+              component = match_data[:component]
+              architecture = match_data[:architecture]
+            else
+              distribution = distribution_or_path
+            end
+
             instance = new(distribution)
-            instance.configure
+            instance.configure(component: component, architecture: architecture)
             instance
+          end
+
+          def self.path_pattern
+            part = %r{[[:graph:]]+?}
+
+            %r{\Adists/(?<distribution>#{part})/(?<component>#{part})/binary-(?<architecture>#{part})/Packages.gz}
           end
 
           def self.call(distribution, component: nil, architecture: nil)
