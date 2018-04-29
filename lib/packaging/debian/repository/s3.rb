@@ -29,3 +29,6 @@ require 'packaging/debian/repository/s3/package/get'
 require 'packaging/debian/repository/s3/package/get/substitute'
 require 'packaging/debian/repository/s3/package/put'
 require 'packaging/debian/repository/s3/package/put/substitute'
+
+require 'packaging/debian/repository/s3/commands/package/register'
+require 'packaging/debian/repository/s3/commands/package/register/telemetry'

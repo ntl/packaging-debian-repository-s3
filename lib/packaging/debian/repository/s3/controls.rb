@@ -1,7 +1,9 @@
 require 'aws/s3/client/controls'
+require 'clock/controls'
 require 'packaging/debian/schemas/controls'
 
 require 'packaging/debian/repository/s3/controls/random'
+require 'packaging/debian/repository/s3/controls/time'
 
 require 'packaging/debian/repository/s3/controls/s3_bucket'
 
