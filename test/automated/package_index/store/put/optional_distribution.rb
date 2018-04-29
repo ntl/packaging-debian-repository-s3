@@ -15,7 +15,7 @@ context "Package Index" do
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
+        control_object_key = Controls::PackageIndex::Path::Default.example(
           distribution: override_distribution
         )
 
@@ -34,9 +34,7 @@ context "Package Index" do
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution
-        )
+        control_object_key = Controls::PackageIndex::Path::Default.example(distribution: distribution)
 
         test "Index is uploaded to location of distribution" do
           assert put_object do

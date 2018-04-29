@@ -11,8 +11,7 @@ context "Package Index" do
 
           store = PackageIndex::Store.new(distribution)
 
-          object_key = Controls::PackageIndex::Path.example(
-            distribution: distribution,
+          object_key = Controls::PackageIndex::Path::Default.example(
             component: component
           )
 
@@ -33,10 +32,7 @@ context "Package Index" do
 
           store = PackageIndex::Store.new(distribution)
 
-          object_key = Controls::PackageIndex::Path.example(
-            distribution: distribution,
-            component: default_component
-          )
+          object_key = Controls::PackageIndex::Path::Default.example
 
           data_source = Controls::PackageIndex::Text::Compressed.stream
 

@@ -37,6 +37,15 @@ module Packaging
 
                 "dists/#{distribution}/#{component}/binary-#{architecture}/Packages.gz"
               end
+
+              module Default
+                def self.example(distribution: nil, component: nil, architecture: nil)
+                  component ||= Defaults.component
+                  architecture ||= Defaults.architecture
+
+                  Path.example(distribution: distribution, component: component, architecture: architecture)
+                end
+              end
             end
           end
         end

@@ -13,7 +13,7 @@ context "Package Index" do
 
           context "Return Value" do
             test "First value is remote location" do
-              control_object_key = Controls::PackageIndex::Path.example(distribution: substitute.distribution)
+              control_object_key = Controls::PackageIndex::Path::Default.example(distribution: substitute.distribution)
 
               assert(put_key == control_object_key)
             end

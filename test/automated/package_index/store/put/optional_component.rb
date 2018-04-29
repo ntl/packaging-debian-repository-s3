@@ -15,8 +15,7 @@ context "Package Index" do
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution,
+        control_object_key = Controls::PackageIndex::Path::Default.example(
           component: component
         )
 
@@ -37,10 +36,7 @@ context "Package Index" do
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution,
-          component: default_copmonent
-        )
+        control_object_key = Controls::PackageIndex::Path::Default.example
 
         test "Index is uploaded to location of default component" do
           assert put_object do

@@ -15,8 +15,7 @@ context "Package Index" do
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution,
+        control_object_key = Controls::PackageIndex::Path::Default.example(
           architecture: architecture
         )
 
@@ -30,17 +29,12 @@ context "Package Index" do
       end
 
       context "Omitted" do
-        default_architecture = Defaults.architecture
-
         store = PackageIndex::Store.new(distribution)
         store.put(package_index)
 
         put_object = store.put_object
 
-        control_object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution,
-          architecture: default_architecture
-        )
+        control_object_key = Controls::PackageIndex::Path::Default.example
 
         test "Index is uploaded to location of default architecture" do
           assert put_object do

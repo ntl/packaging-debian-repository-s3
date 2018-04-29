@@ -3,13 +3,7 @@ module Packaging
     module Repository
       module S3
         module Controls
-          module Component
-            def self.example
-              Defaults.component
-            end
-
-            Alternate = Schemas::Controls::Component::Alternate
-          end
+          Component = Schemas::Controls::Component
         end
       end
     end

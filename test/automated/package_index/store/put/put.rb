@@ -10,7 +10,7 @@ context "Package Index" do
       package_index = Controls::PackageIndex.example
 
       control_text = Controls::PackageIndex::Text::Compressed.example
-      control_object_key = Controls::PackageIndex::Path.example(distribution: distribution)
+      control_object_key = Controls::PackageIndex::Path::Default.example
 
       put_object = store.put_object
 

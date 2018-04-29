@@ -3,13 +3,7 @@ module Packaging
     module Repository
       module S3
         module Controls
-          module Architecture
-            def self.example
-              Defaults.architecture
-            end
-
-            Alternate = Schemas::Controls::Architecture::Alternate
-          end
+          Architecture = Schemas::Controls::Architecture
         end
       end
     end

@@ -101,10 +101,6 @@ module Packaging
             end
 
             def put(package_index, distribution: nil, component: nil, architecture: nil)
-              distribution ||= self.distribution
-              component ||= self.component
-              architecture ||= self.architecture
-
               object_key = object_key(distribution: distribution, component: component, architecture: architecture)
 
               logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }

@@ -10,8 +10,7 @@ context "Package Index" do
 
         component = Controls::Component::Alternate.example
 
-        object_key = Controls::PackageIndex::Path.example(
-          distribution: distribution,
+        object_key = Controls::PackageIndex::Path::Default.example(
           component: component
         )
 

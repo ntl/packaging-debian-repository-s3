@@ -7,7 +7,7 @@ context "Package Index" do
 
       store = PackageIndex::Store.new(distribution)
 
-      object_key = Controls::PackageIndex::Path.example(distribution: distribution)
+      object_key = Controls::PackageIndex::Path::Default.example
 
       data_stream = Controls::PackageIndex::Text::Compressed.stream
 

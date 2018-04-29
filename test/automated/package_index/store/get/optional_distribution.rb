@@ -11,7 +11,7 @@ context "Package Index" do
 
           store = PackageIndex::Store.new(distribution)
 
-          object_key = Controls::PackageIndex::Path.example(
+          object_key = Controls::PackageIndex::Path::Default.example(
             distribution: override_distribution
           )
 
@@ -30,7 +30,7 @@ context "Package Index" do
         context "Omitted" do
           store = PackageIndex::Store.new(distribution)
 
-          object_key = Controls::PackageIndex::Path.example(
+          object_key = Controls::PackageIndex::Path::Default.example(
             distribution: distribution
           )
 
