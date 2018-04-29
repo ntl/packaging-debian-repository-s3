@@ -19,12 +19,46 @@ context "Package Index" do
             end
           end
 
+          context "Component Included" do
+            component = Controls::Component::Alternate.example
+
+            substitute = Dependency::Substitute.build(PackageIndex::Store)
+
+            substitute.add(control_package_index, component: component)
+
+            context "Included Component Given" do
+              package_index = substitute.fetch(component: component)
+
+              test "Returns package index that was added" do
+                assert(package_index == control_package_index)
+              end
+            end
+
+            context "Included Component Mismatch" do
+              incorrect_component = Controls::Random.unique_text
+
+              package_index = substitute.fetch(component: incorrect_component)
+
+              test "Returns uninitialized package index" do
+                assert(package_index == PackageIndex.new)
+              end
+            end
+
+            context "Included Component Omitted" do
+              package_index = substitute.fetch
+
+              test "Returns uninitialized package index" do
+                assert(package_index == PackageIndex.new)
+              end
+            end
+          end
+
           context "Architecture Included" do
             architecture = Controls::Architecture::Alternate.example
 
             substitute = Dependency::Substitute.build(PackageIndex::Store)
 
-            substitute.add(control_package_index, architecture)
+            substitute.add(control_package_index, architecture: architecture)
 
             context "Included Architecture Given" do
               package_index = substitute.fetch(architecture: architecture)

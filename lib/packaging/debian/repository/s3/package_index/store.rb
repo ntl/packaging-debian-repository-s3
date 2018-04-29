@@ -51,10 +51,8 @@ module Packaging
               %r{\Adists/(?<distribution>#{part})/(?<component>#{part})/binary-(?<architecture>#{part})/Packages.gz}
             end
 
-            def get(architecture: nil)
-              architecture ||= self.architecture
-
-              object_key = object_key(architecture)
+            def get(component: nil, architecture: nil)
+              object_key = object_key(component: component, architecture: architecture)
 
               logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
 
@@ -80,8 +78,11 @@ module Packaging
               package_index
             end
 
-            def fetch(architecture: nil)
-              package_index = get(architecture: architecture)
+            def fetch(component: nil, architecture: nil)
+              package_index = get(
+                component: component,
+                architecture: architecture
+              )
 
               if package_index.nil?
                 package_index = PackageIndex.new
@@ -90,10 +91,11 @@ module Packaging
               package_index
             end
 
-            def put(package_index, architecture: nil)
+            def put(package_index, component: nil, architecture: nil)
+              component ||= self.component
               architecture ||= self.architecture
 
-              object_key = object_key(architecture)
+              object_key = object_key(component: component, architecture: architecture)
 
               logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }
 
@@ -106,7 +108,14 @@ module Packaging
               result
             end
 
-            def object_key(architecture)
+            def old_object_key(architecture)
+              object_key(architecture: architecture)
+            end
+
+            def object_key(component: nil, architecture: nil)
+              component ||= self.component
+              architecture ||= self.architecture
+
               ::File.join(
                 'dists',
                 distribution,

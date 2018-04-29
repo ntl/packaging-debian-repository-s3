@@ -11,23 +11,29 @@ module Packaging
 
               class Store
                 attr_accessor :get_package_index
+                attr_accessor :get_component
                 attr_accessor :get_architecture
 
                 attr_accessor :put_package_index
+                attr_accessor :put_component
                 attr_accessor :put_architecture
 
-                def get(architecture: nil)
+                def get(component: nil, architecture: nil)
+                  return nil unless component == get_component
+
                   return nil unless architecture == get_architecture
 
                   get_package_index
                 end
 
-                def fetch(architecture: nil)
-                  get(architecture: architecture) || PackageIndex.new
+                def fetch(component: nil, architecture: nil)
+                  get(component: component, architecture: architecture) or
+                    PackageIndex.new
                 end
 
-                def put(package_index, architecture: nil)
+                def put(package_index, component: nil, architecture: nil)
                   self.put_package_index = package_index
+                  self.put_component = component
                   self.put_architecture = architecture
                 end
 
@@ -38,15 +44,20 @@ module Packaging
                     if block.nil?
                       true
                     else
-                      block.(put_package_index, put_architecture)
+                      block.(
+                        put_package_index,
+                        put_component,
+                        put_architecture
+                      )
                     end
                   else
                     put_package_index == package_index
                   end
                 end
 
-                def add(package_index, architecture=nil)
+                def add(package_index, component: nil, architecture: nil)
                   self.get_package_index = package_index
+                  self.get_component = component
                   self.get_architecture = architecture
                 end
               end

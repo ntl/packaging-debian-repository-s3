@@ -58,6 +58,26 @@ context "Package Index" do
           end
         end
 
+        context "Component Given" do
+          component = Controls::Component::Alternate.example
+
+          substitute = Dependency::Substitute.build(PackageIndex::Store)
+
+          substitute.put(package_index, component: component)
+
+          context "Put Predicate" do
+            context "Block Given" do
+              test "Component is yielded to block" do
+                second_yielded_argument = nil
+
+                substitute.put? { |_, comp| second_yielded_argument = comp }
+
+                assert(second_yielded_argument == component)
+              end
+            end
+          end
+        end
+
         context "Architecture Given" do
           architecture = Controls::Architecture::Alternate.example
 
@@ -68,11 +88,11 @@ context "Package Index" do
           context "Put Predicate" do
             context "Block Given" do
               test "Architecture is yielded to block" do
-                second_yielded_argument = nil
+                third_yielded_argument = nil
 
-                substitute.put? { |_, arch| second_yielded_argument = arch }
+                substitute.put? { |_, _, arch| third_yielded_argument = arch }
 
-                assert(second_yielded_argument == architecture)
+                assert(third_yielded_argument == architecture)
               end
             end
           end
