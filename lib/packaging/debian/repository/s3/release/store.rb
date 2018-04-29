@@ -60,8 +60,10 @@ module Packaging
               release
             end
 
-            def put(release)
-              logger.trace { "Putting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+            def put(release, distribution: nil)
+              object_key = object_key(distribution)
+
+              logger.trace { "Putting release (Object Key: #{object_key.inspect})" }
 
               signed_text = ::Transform::Write.(release, :rfc822_signed)
 
@@ -69,12 +71,14 @@ module Packaging
 
               put_object.(object_key, data_stream, acl: 'public-read')
 
-              logger.info { "Put release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+              logger.info { "Put release done (Object Key: #{object_key.inspect})" }
 
               return object_key, signed_text
             end
 
-            def object_key
+            def object_key(distribution=nil)
+              distribution ||= self.distribution
+
               ::File.join('dists', distribution, 'InRelease')
             end
           end
