@@ -67,11 +67,11 @@ module Packaging
 
               data_stream = StringIO.new(signed_text)
 
-              result = put_object.(object_key, data_stream, acl: 'public-read')
+              put_object.(object_key, data_stream, acl: 'public-read')
 
               logger.info { "Put release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
-              result
+              return object_key, signed_text
             end
 
             def object_key

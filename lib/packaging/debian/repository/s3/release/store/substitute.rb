@@ -6,12 +6,21 @@ module Packaging
           class Store
             module Substitute
               def self.build
-                Store.new
+                Store.build
               end
 
-              class Store
+              class Store < Store
                 attr_accessor :get_release
-                attr_accessor :put_release
+
+                def self.build
+                  distribution = self.distribution
+
+                  new(distribution)
+                end
+
+                def self.distribution
+                  'null'
+                end
 
                 def get
                   get_release
@@ -21,21 +30,19 @@ module Packaging
                   get_release || Release.new
                 end
 
-                def put(release)
-                  self.put_release = release
-                end
-
                 def put?(release=nil, &block)
-                  return false if put_release.nil?
-
                   if release.nil?
-                    if block.nil?
-                      true
-                    else
-                      block.(put_release)
-                    end
+                    block ||= proc { true }
                   else
-                    put_release == release
+                    block ||= proc { |put_release| put_release == release }
+                  end
+
+                  put_object.put? do |_, telemetry_data|
+                    put_text = telemetry_data.data_source.string
+
+                    put_release = ::Transform::Read.(put_text, :rfc822_signed, Release)
+
+                    block.(put_release)
                   end
                 end
 

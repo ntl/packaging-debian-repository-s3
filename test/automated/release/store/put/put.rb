@@ -8,9 +8,22 @@ context "Release" do
       release = Controls::Release.example
 
       store = Release::Store.new(distribution)
-      store.put(release)
 
       put_object = store.put_object
+
+      put_key, put_text = store.put(release)
+
+      context "Return Value" do
+        test "First value is remote location" do
+          assert(put_key == Controls::Release::Path.example)
+        end
+
+        test "Second value is raw, signed text" do
+          unsigned_put_text = Controls::GPG::Clearsign::Signature::Remove.(put_text)
+
+          assert(unsigned_put_text == Controls::Release::Text.example)
+        end
+      end
 
       test "Release is uploaded to repository" do
         control_text = Controls::Release::Text.example

@@ -9,7 +9,21 @@ context "Release" do
 
           release = Controls::Release.example
 
-          substitute.put(release)
+          put_key, put_text = substitute.put(release)
+
+          context "Return Value" do
+            test "First value is remote location" do
+              control_object_key = Controls::Release::Path.example(substitute.distribution)
+
+              assert(put_key == control_object_key)
+            end
+
+            test "Second value is raw, signed text" do
+              unsigned_put_text = Controls::GPG::Clearsign::Signature::Remove.(put_text)
+
+              assert(unsigned_put_text == Controls::Release::Text.example)
+            end
+          end
 
           context "Put Predicate" do
             context "No Argument" do
