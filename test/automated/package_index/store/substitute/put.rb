@@ -9,7 +9,21 @@ context "Package Index" do
         context do
           substitute = Dependency::Substitute.build(PackageIndex::Store)
 
-          substitute.put(package_index)
+          put_key, put_text = substitute.put(package_index)
+
+          context "Return Value" do
+            test "First value is remote location" do
+              control_object_key = Controls::PackageIndex::Path.example(distribution: substitute.distribution)
+
+              assert(put_key == control_object_key)
+            end
+
+            test "Second value is raw, compressed text" do
+              control_text = Controls::PackageIndex::Text::Compressed.example
+
+              assert(put_text == control_text)
+            end
+          end
 
           context "Put Predicate" do
             context "No Argument" do

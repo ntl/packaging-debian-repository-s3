@@ -109,11 +109,11 @@ module Packaging
 
               compressed_text = ::Transform::Write.(package_index, :rfc822_compressed)
 
-              result = put_object.(object_key, compressed_text, acl: 'public-read')
+              put_object.(object_key, compressed_text, acl: 'public-read')
 
               logger.info { "Put package index done (Object Key: #{object_key.inspect})" }
 
-              result
+              return object_key, compressed_text
             end
 
             def old_object_key(architecture)
