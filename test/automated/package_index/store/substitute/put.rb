@@ -72,6 +72,26 @@ context "Package Index" do
           end
         end
 
+        context "Distribution Given" do
+          distribution = Controls::Distribution::Alternate.example
+
+          substitute = Dependency::Substitute.build(PackageIndex::Store)
+
+          substitute.put(package_index, distribution: distribution)
+
+          context "Put Predicate" do
+            context "Block Given" do
+              test "Distribution is yielded to block" do
+                second_yielded_argument = nil
+
+                substitute.put? { |_, dist| second_yielded_argument = dist }
+
+                assert(second_yielded_argument == distribution)
+              end
+            end
+          end
+        end
+
         context "Component Given" do
           component = Controls::Component::Alternate.example
 
@@ -82,11 +102,11 @@ context "Package Index" do
           context "Put Predicate" do
             context "Block Given" do
               test "Component is yielded to block" do
-                second_yielded_argument = nil
+                third_yielded_argument = nil
 
-                substitute.put? { |_, comp| second_yielded_argument = comp }
+                substitute.put? { |_, _, comp| third_yielded_argument = comp }
 
-                assert(second_yielded_argument == component)
+                assert(third_yielded_argument == component)
               end
             end
           end
@@ -102,11 +122,11 @@ context "Package Index" do
           context "Put Predicate" do
             context "Block Given" do
               test "Architecture is yielded to block" do
-                third_yielded_argument = nil
+                fourth_yielded_argument = nil
 
-                substitute.put? { |_, _, arch| third_yielded_argument = arch }
+                substitute.put? { |_, _, _, arch| fourth_yielded_argument = arch }
 
-                assert(third_yielded_argument == architecture)
+                assert(fourth_yielded_argument == architecture)
               end
             end
           end

@@ -19,6 +19,40 @@ context "Package Index" do
             end
           end
 
+          context "Distribution Included" do
+            distribution = Controls::Distribution::Alternate.example
+
+            substitute = Dependency::Substitute.build(PackageIndex::Store)
+
+            substitute.add(control_package_index, distribution: distribution)
+
+            context "Included Distribution Given" do
+              package_index = substitute.get(distribution: distribution)
+
+              test "Returns package index that was added" do
+                assert(package_index == control_package_index)
+              end
+            end
+
+            context "Included Distribution Mismatch" do
+              incorrect_distribution = Controls::Random.unique_text
+
+              package_index = substitute.get(distribution: incorrect_distribution)
+
+              test "Returns nothing" do
+                assert(package_index.nil?)
+              end
+            end
+
+            context "Included Component Omitted" do
+              package_index = substitute.get
+
+              test "Returns nothing" do
+                assert(package_index.nil?)
+              end
+            end
+          end
+
           context "Component Included" do
             component = Controls::Component::Alternate.example
 

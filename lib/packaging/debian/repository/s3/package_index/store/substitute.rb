@@ -36,14 +36,14 @@ module Packaging
                       PackageIndex
                     )
 
-                    _, component, architecture = self.class.parse_path(object_key)
+                    distribution, component, architecture = self.class.parse_path(object_key)
 
-                    block.(put_package_index, component, architecture)
+                    block.(put_package_index, distribution, component, architecture)
                   end
                 end
 
-                def add(package_index, component: nil, architecture: nil)
-                  object_key = object_key(component: component, architecture: architecture)
+                def add(package_index, distribution: nil, component: nil, architecture: nil)
+                  object_key = object_key(distribution: distribution, component: component, architecture: architecture)
 
                   compressed_text = ::Transform::Write.(
                     package_index,

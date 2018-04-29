@@ -59,8 +59,8 @@ module Packaging
               %r{\Adists/(?<distribution>#{part})/(?<component>#{part})/binary-(?<architecture>#{part})/Packages.gz}
             end
 
-            def get(component: nil, architecture: nil)
-              object_key = object_key(component: component, architecture: architecture)
+            def get(distribution: nil, component: nil, architecture: nil)
+              object_key = object_key(distribution: distribution, component: component, architecture: architecture)
 
               logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
 
@@ -86,8 +86,9 @@ module Packaging
               package_index
             end
 
-            def fetch(component: nil, architecture: nil)
+            def fetch(distribution: nil, component: nil, architecture: nil)
               package_index = get(
+                distribution: distribution,
                 component: component,
                 architecture: architecture
               )
@@ -99,11 +100,12 @@ module Packaging
               package_index
             end
 
-            def put(package_index, component: nil, architecture: nil)
+            def put(package_index, distribution: nil, component: nil, architecture: nil)
+              distribution ||= self.distribution
               component ||= self.component
               architecture ||= self.architecture
 
-              object_key = object_key(component: component, architecture: architecture)
+              object_key = object_key(distribution: distribution, component: component, architecture: architecture)
 
               logger.trace { "Putting package index (Object Key: #{object_key.inspect})" }
 
@@ -116,11 +118,8 @@ module Packaging
               return object_key, compressed_text
             end
 
-            def old_object_key(architecture)
-              object_key(architecture: architecture)
-            end
-
-            def object_key(component: nil, architecture: nil)
+            def object_key(distribution: nil, component: nil, architecture: nil)
+              distribution ||= self.distribution
               component ||= self.component
               architecture ||= self.architecture
 
