@@ -36,9 +36,7 @@ module Packaging
                       PackageIndex
                     )
 
-                    distribution, component, architecture = self.class.parse_path(object_key)
-
-                    block.(put_package_index, distribution, component, architecture)
+                    block.(put_package_index, object_key)
                   end
                 end
 

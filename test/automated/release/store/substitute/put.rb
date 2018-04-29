@@ -57,6 +57,14 @@ context "Release" do
                 assert(yielded_argument == release)
               end
 
+              test "Object key is yielded to block" do
+                second_yielded_argument = nil
+
+                substitute.put? { |_, key| second_yielded_argument = key }
+
+                assert(second_yielded_argument == put_key)
+              end
+
               context "Block Evaluates to False" do
                 test "Returns false" do
                   refute(substitute.put? { false })

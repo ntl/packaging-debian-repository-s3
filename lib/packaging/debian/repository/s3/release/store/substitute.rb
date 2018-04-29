@@ -37,12 +37,12 @@ module Packaging
                     block ||= proc { |put_release| put_release == release }
                   end
 
-                  put_object.put? do |_, telemetry_data|
+                  put_object.put? do |object_key, telemetry_data|
                     put_text = telemetry_data.data_source.string
 
                     put_release = ::Transform::Read.(put_text, :rfc822_signed, Release)
 
-                    block.(put_release)
+                    block.(put_release, object_key)
                   end
                 end
 

@@ -57,6 +57,14 @@ context "Package Index" do
                 assert(yielded_argument == package_index)
               end
 
+              test "Object key is yielded to block" do
+                second_yielded_argument = nil
+
+                substitute.put? { |_, key| second_yielded_argument = key }
+
+                assert(second_yielded_argument == put_key)
+              end
+
               context "Block Evaluates to False" do
                 test "Returns false" do
                   refute(substitute.put? { false })
@@ -77,18 +85,10 @@ context "Package Index" do
 
           substitute = Dependency::Substitute.build(PackageIndex::Store)
 
-          substitute.put(package_index, distribution: distribution)
+          _, put_key = substitute.put(package_index, distribution: distribution)
 
-          context "Put Predicate" do
-            context "Block Given" do
-              test "Distribution is yielded to block" do
-                second_yielded_argument = nil
-
-                substitute.put? { |_, dist| second_yielded_argument = dist }
-
-                assert(second_yielded_argument == distribution)
-              end
-            end
+          test "Index is uploaded to given distribution" do
+            control_key = Controls::PackageIndex::Path::Default.example(distribution: distribution)
           end
         end
 
@@ -97,18 +97,10 @@ context "Package Index" do
 
           substitute = Dependency::Substitute.build(PackageIndex::Store)
 
-          substitute.put(package_index, component: component)
+          _, put_key = substitute.put(package_index, component: component)
 
-          context "Put Predicate" do
-            context "Block Given" do
-              test "Component is yielded to block" do
-                third_yielded_argument = nil
-
-                substitute.put? { |_, _, comp| third_yielded_argument = comp }
-
-                assert(third_yielded_argument == component)
-              end
-            end
+          test "Index is uploaded to given component" do
+            control_key = Controls::PackageIndex::Path::Default.example(component: component)
           end
         end
 
@@ -117,18 +109,10 @@ context "Package Index" do
 
           substitute = Dependency::Substitute.build(PackageIndex::Store)
 
-          substitute.put(package_index, architecture: architecture)
+          _, put_key = substitute.put(package_index, architecture: architecture)
 
-          context "Put Predicate" do
-            context "Block Given" do
-              test "Architecture is yielded to block" do
-                fourth_yielded_argument = nil
-
-                substitute.put? { |_, _, _, arch| fourth_yielded_argument = arch }
-
-                assert(fourth_yielded_argument == architecture)
-              end
-            end
+          test "Index is uploaded to given architecture" do
+            control_key = Controls::PackageIndex::Path::Default.example(architecture: architecture)
           end
         end
 
