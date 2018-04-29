@@ -32,10 +32,8 @@ module Packaging
             end
 
             def self.build(distribution_or_path)
-              if match_data = path_pattern.match(distribution_or_path)
-                distribution = match_data[:distribution]
-                component = match_data[:component]
-                architecture = match_data[:architecture]
+              if match_data = parse_path(distribution_or_path)
+                distribution, component, architecture = match_data
               else
                 distribution = distribution_or_path
               end
@@ -43,6 +41,16 @@ module Packaging
               instance = new(distribution)
               instance.configure(component: component, architecture: architecture)
               instance
+            end
+
+            def self.parse_path(path)
+              match_data = path_pattern.match(path)
+
+              return nil if match_data.nil?
+
+              _, distribution, component, architecture = match_data.to_a
+
+              return distribution, component, architecture
             end
 
             def self.path_pattern

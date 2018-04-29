@@ -6,59 +6,53 @@ module Packaging
           class Store
             module Substitute
               def self.build
-                Store.new
+                Store.build
               end
 
-              class Store
-                attr_accessor :get_package_index
-                attr_accessor :get_component
-                attr_accessor :get_architecture
+              class Store < Store
+                def self.build
+                  distribution = self.distribution
 
-                attr_accessor :put_package_index
-                attr_accessor :put_component
-                attr_accessor :put_architecture
-
-                def get(component: nil, architecture: nil)
-                  return nil unless component == get_component
-
-                  return nil unless architecture == get_architecture
-
-                  get_package_index
+                  new(distribution)
                 end
 
-                def fetch(component: nil, architecture: nil)
-                  get(component: component, architecture: architecture) or
-                    PackageIndex.new
-                end
-
-                def put(package_index, component: nil, architecture: nil)
-                  self.put_package_index = package_index
-                  self.put_component = component
-                  self.put_architecture = architecture
+                def self.distribution
+                  'null'
                 end
 
                 def put?(package_index=nil, &block)
-                  return false if put_package_index.nil?
-
                   if package_index.nil?
-                    if block.nil?
-                      true
-                    else
-                      block.(
-                        put_package_index,
-                        put_component,
-                        put_architecture
-                      )
-                    end
+                    block ||= proc { true }
                   else
-                    put_package_index == package_index
+                    block ||= proc { |put_package_index| package_index == put_package_index }
+                  end
+
+                  put_object.put? do |object_key, telemetry_data|
+                    put_text = telemetry_data.data_source
+
+                    put_package_index = ::Transform::Read.(
+                      put_text,
+                      :rfc822_compressed,
+                      PackageIndex
+                    )
+
+                    _, component, architecture = self.class.parse_path(object_key)
+
+                    block.(put_package_index, component, architecture)
                   end
                 end
 
                 def add(package_index, component: nil, architecture: nil)
-                  self.get_package_index = package_index
-                  self.get_component = component
-                  self.get_architecture = architecture
+                  object_key = object_key(component: component, architecture: architecture)
+
+                  compressed_text = ::Transform::Write.(
+                    package_index,
+                    :rfc822_compressed
+                  )
+
+                  data_stream = StringIO.new(compressed_text)
+
+                  get_object.add(object_key, data_stream)
                 end
               end
             end
