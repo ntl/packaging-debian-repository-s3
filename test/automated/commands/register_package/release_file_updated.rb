@@ -22,14 +22,13 @@ context "Commands" do
       register_package = Commands::Package::Register.new(distribution)
 
       release_store = register_package.release_store
-
       release_store.add(prior_release)
 
       telemetry_sink = Commands::Package::Register.register_telemetry_sink(register_package)
 
       register_package.(index_entry, component: component)
 
-      context "Uploaded Release File" do
+      context "Updated Release File" do
         telemetry_record = telemetry_sink.one_record do |record|
           record.signal == :put_release
         end

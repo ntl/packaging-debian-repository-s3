@@ -17,7 +17,6 @@ context "Commands" do
       register_package = Commands::Package::Register.new(distribution)
 
       package_index_store = register_package.package_index_store
-
       package_index_store.add(package_index)
 
       test "Does not raise error" do

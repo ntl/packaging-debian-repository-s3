@@ -53,6 +53,7 @@ module Packaging
                 logger.trace { "Registering package index entry (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})" }
 
                 index = package_index_store.fetch(component: component)
+
                 index.add_entry!(index_entry)
 
                 compressed_index_path, compressed_index_text = package_index_store.put(
