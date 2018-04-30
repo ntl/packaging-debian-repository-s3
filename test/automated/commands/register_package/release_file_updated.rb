@@ -6,7 +6,7 @@ context "Commands" do
       index_entry = Controls::PackageIndex::Entry.example
 
       distribution = Controls::Distribution.example
-      component = Controls::Component.example
+      component = Controls::Random.unique_text
       architecture = index_entry.architecture or fail
 
       package_index_path = Controls::PackageIndex::Path::Relative.example(component: component, architecture: architecture)

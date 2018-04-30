@@ -50,9 +50,33 @@ module Packaging
                 component ||= self.component
                 architecture = index_entry.architecture
 
+                release = release_store.fetch
+
+                if architecture == 'all'
+                  architectures = release.architectures
+                else
+                  architectures = [architecture]
+                end
+
+                if architectures.empty?
+                  error_message = "Could not register package, no suitable architectures found (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})"
+                  logger.error { error_message }
+                  raise UnknownArchitecturesError, error_message
+                end
+
+                architectures.each do |architecture|
+                  register(index_entry, release, component, architecture)
+                end
+              end
+
+              def register(index_entry, release, component, architecture)
                 logger.trace { "Registering package index entry (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})" }
 
-                index = package_index_store.fetch(component: component)
+                index = package_index_store.fetch(
+                  distribution: distribution,
+                  component: component,
+                  architecture: architecture
+                )
 
                 index.add_entry!(index_entry)
 
@@ -70,8 +94,6 @@ module Packaging
 
                 compressed_index_path = relative_path(compressed_index_path)
 
-                release = release_store.fetch
-
                 release.suite = distribution
                 release.architectures << architecture
                 release.components << component
@@ -83,7 +105,7 @@ module Packaging
                   sha256: compressed_index_sha256
                 )
 
-                uncompressed_path = File.basename(compressed_index_path, '.gz')
+                uncompressed_path = compressed_index_path.chomp('.gz')
 
                 uncompressed_text = Transform::Write.(index, :rfc822)
                 uncompressed_size = uncompressed_text.bytesize
@@ -110,6 +132,8 @@ module Packaging
 
                 path.delete_prefix(prefix)
               end
+
+              UnknownArchitecturesError = Class.new(StandardError)
             end
           end
         end

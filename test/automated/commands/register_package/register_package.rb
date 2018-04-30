@@ -124,7 +124,7 @@ context "Commands" do
             uncompressed_text = Transform::Write.(package_index_data.package_index, :rfc822)
 
             uncompressed_index = {
-              :filename => File.basename(relative_path, '.gz'),
+              :filename => relative_path.chomp('.gz'),
               :size => uncompressed_text.bytesize,
               :sha256 => Digest::SHA256.hexdigest(uncompressed_text)
             }

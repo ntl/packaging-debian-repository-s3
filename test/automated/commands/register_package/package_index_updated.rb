@@ -18,7 +18,7 @@ context "Commands" do
       register_package = Commands::Package::Register.new(distribution)
 
       package_index_store = register_package.package_index_store
-      package_index_store.add(package_index, component: component)
+      package_index_store.add(package_index, distribution: distribution, component: component, architecture: architecture)
 
       telemetry_sink = Commands::Package::Register.register_telemetry_sink(register_package)
 
