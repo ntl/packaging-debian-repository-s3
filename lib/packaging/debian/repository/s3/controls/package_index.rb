@@ -35,7 +35,18 @@ module Packaging
                 component ||= Component.example
                 architecture ||= Architecture.example
 
-                "dists/#{distribution}/#{component}/binary-#{architecture}/Packages.gz"
+                relative = Relative.example(component: component, architecture: architecture)
+
+                File.join('dists', distribution, relative)
+              end
+
+              module Relative
+                def self.example(component: nil, architecture: nil)
+                  component ||= Defaults.component
+                  architecture ||= Defaults.architecture
+
+                  "#{component}/binary-#{architecture}/Packages.gz"
+                end
               end
 
               module Default

@@ -62,6 +62,8 @@ module Packaging
                   architecture: architecture
                 )
 
+                compressed_index_path = relative_path(compressed_index_path)
+
                 compressed_index_size = compressed_index_text.bytesize
                 compressed_index_sha256 = Digest::SHA256.hexdigest(compressed_index_text)
 
@@ -100,6 +102,12 @@ module Packaging
                 telemetry.record(:put_release, Telemetry::PutRelease.new(release, release_path, release_text))
 
                 logger.info { "Registered package index entry (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})" }
+              end
+
+              def relative_path(path)
+                prefix = File.join('dists', distribution, '')
+
+                path.delete_prefix(prefix)
               end
             end
           end
