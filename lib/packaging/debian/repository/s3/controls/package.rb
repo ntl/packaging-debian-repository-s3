@@ -14,7 +14,9 @@ module Packaging
               def self.example(filename=nil)
                 filename ||= Package.filename
 
-                "pool/#{filename[0]}/#{filename}"
+                basename = ::File.basename(filename)
+
+                ::File.join("pool", basename[0], basename)
               end
             end
           end

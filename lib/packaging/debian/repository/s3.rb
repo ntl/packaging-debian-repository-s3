@@ -33,3 +33,5 @@ require 'packaging/debian/repository/s3/package/put/substitute'
 require 'packaging/debian/repository/s3/commands/package/register'
 require 'packaging/debian/repository/s3/commands/package/register/substitute'
 require 'packaging/debian/repository/s3/commands/package/register/telemetry'
+
+require 'packaging/debian/repository/s3/commands/package/publish'
