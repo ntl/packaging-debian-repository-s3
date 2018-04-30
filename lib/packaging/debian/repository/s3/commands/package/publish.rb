@@ -44,7 +44,19 @@ module Packaging
 
                 logger.trace { "Publishing package (File: #{filename.inspect}, Object Key: #{object_key.inspect}, Component: #{component.inspect})" }
 
-                package_metadata = Schemas::Package::Read.(deb_file)
+                unless File.size?(deb_file)
+                  error_message = "File not found (File: #{filename.inspect}, Object Key: #{object_key.inspect}, Component: #{component.inspect})"
+                  logger.error { error_message }
+                  raise FileNotFoundError, error_message
+                end
+
+                begin
+                  package_metadata = Schemas::Package::Read.(deb_file)
+                rescue Schemas::Package::Read::Failure
+                  error_message = "Malformed debian file (File: #{filename.inspect}, Object Key: #{object_key.inspect}, Component: #{component.inspect})"
+                  logger.error { error_message }
+                  raise MalformedPackageFileError, error_message
+                end
 
                 index_entry = PackageIndex::Entry.build
 
@@ -79,6 +91,9 @@ module Packaging
                   filename
                 )
               end
+
+              FileNotFoundError = Class.new(StandardError)
+              MalformedPackageFileError = Class.new(StandardError)
             end
           end
         end
