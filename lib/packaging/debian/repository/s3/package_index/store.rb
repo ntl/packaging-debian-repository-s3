@@ -8,6 +8,17 @@ module Packaging
 
             configure :store
 
+            dependency :get_object, AWS::S3::Client::Object::Get
+            dependency :put_object, AWS::S3::Client::Object::Put
+
+            def configure(component: nil, architecture: nil)
+              self.component = component unless component.nil?
+              self.architecture = architecture unless architecture.nil?
+
+              AWS::S3::Client::Object::Get.configure(self)
+              AWS::S3::Client::Object::Put.configure(self)
+            end
+
             attr_writer :architecture
             def architecture
               @architecture ||= Defaults.architecture
@@ -19,17 +30,6 @@ module Packaging
             end
 
             initializer :distribution
-
-            dependency :get_object, AWS::S3::Client::Object::Get
-            dependency :put_object, AWS::S3::Client::Object::Put
-
-            def configure(component: nil, architecture: nil)
-              self.component = component unless component.nil?
-              self.architecture = architecture unless architecture.nil?
-
-              AWS::S3::Client::Object::Get.configure(self)
-              AWS::S3::Client::Object::Put.configure(self)
-            end
 
             def self.build(distribution_or_path)
               if match_data = parse_path(distribution_or_path)

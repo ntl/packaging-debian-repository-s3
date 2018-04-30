@@ -10,6 +10,11 @@ module Packaging
 
               configure :register_package
 
+              attr_writer :component
+              def component
+                @component ||= Defaults.component
+              end
+
               dependency :clock, Clock::UTC
               dependency :package_index_store, PackageIndex::Store
               dependency :release_store, Release::Store
@@ -42,6 +47,7 @@ module Packaging
               end
 
               def call(index_entry, component: nil)
+                component ||= self.component
                 architecture = index_entry.architecture
 
                 logger.trace { "Registering package index entry (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})" }
