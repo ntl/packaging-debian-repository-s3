@@ -113,8 +113,10 @@ context "Commands" do
 
         context "Data" do
           test "Release file includes package index, both uncompressed and compressed" do
+            relative_path = File.join(component, "binary-#{architecture}", 'Packages.gz')
+
             compressed_index = {
-              :filename => package_index_data.remote_path,
+              :filename => relative_path,
               :size => package_index_data.size,
               :sha256 => package_index_data.sha256
             }
@@ -122,7 +124,7 @@ context "Commands" do
             uncompressed_text = Transform::Write.(package_index_data.package_index, :rfc822)
 
             uncompressed_index = {
-              :filename => File.basename(package_index_data.remote_path, '.gz'),
+              :filename => File.basename(relative_path, '.gz'),
               :size => uncompressed_text.bytesize,
               :sha256 => Digest::SHA256.hexdigest(uncompressed_text)
             }
