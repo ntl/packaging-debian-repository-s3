@@ -74,6 +74,18 @@ module Packaging
                   sha256: compressed_index_sha256
                 )
 
+                uncompressed_path = File.basename(compressed_index_path, '.gz')
+
+                uncompressed_text = Transform::Write.(index, :rfc822)
+                uncompressed_size = uncompressed_text.bytesize
+                uncompressed_sha256 = Digest::SHA256.hexdigest(uncompressed_text)
+
+                release.add_file(
+                  uncompressed_path,
+                  uncompressed_size,
+                  sha256: uncompressed_sha256
+                )
+
                 release_path, release_text = release_store.put(
                   release,
                   distribution: distribution

@@ -112,12 +112,22 @@ context "Commands" do
         end
 
         context "Data" do
-          test "Release file includes package index" do
-            files = [{
+          test "Release file includes package index, both uncompressed and compressed" do
+            compressed_index = {
               :filename => package_index_data.remote_path,
               :size => package_index_data.size,
               :sha256 => package_index_data.sha256
-            }]
+            }
+
+            uncompressed_text = Transform::Write.(package_index_data.package_index, :rfc822)
+
+            uncompressed_index = {
+              :filename => File.basename(package_index_data.remote_path, '.gz'),
+              :size => uncompressed_text.bytesize,
+              :sha256 => Digest::SHA256.hexdigest(uncompressed_text)
+            }
+
+            files = [compressed_index, uncompressed_index]
 
             control_release = Controls::Release::Minimal.example(files: files)
 
