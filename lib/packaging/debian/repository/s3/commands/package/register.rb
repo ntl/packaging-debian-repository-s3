@@ -21,8 +21,8 @@ module Packaging
 
               def configure
                 Clock::UTC.configure(self)
-                PackageIndex::Store.configure(self, attr_name: :package_index_store)
-                Release::Store.configure(self, attr_name: :release_store)
+                PackageIndex::Store.configure(self, distribution, attr_name: :package_index_store)
+                Release::Store.configure(self, distribution, attr_name: :release_store)
               end
 
               initializer :distribution

@@ -19,7 +19,7 @@ module Packaging
 
               def configure
                 AWS::S3::Client::Object::Put.configure(self)
-                Register.configure(self)
+                Register.configure(self, distribution)
               end
 
               initializer :distribution
