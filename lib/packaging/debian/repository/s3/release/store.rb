@@ -32,16 +32,16 @@ module Packaging
             def get
               logger.trace { "Getting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
 
-              begin
-                data_source = get_object.(object_key)
-              rescue AWS::S3::Client::Object::Get::ObjectNotFound
+              data_stream = get_object.(object_key)
+
+              if data_stream.nil?
                 logger.warn { "Release file not found (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
                 return nil
               end
 
               text = String.new
 
-              text << data_source.read until data_source.eof?
+              text << data_stream.read until data_stream.eof?
 
               release = ::Transform::Read.(text, :rfc822_signed, Release)
 

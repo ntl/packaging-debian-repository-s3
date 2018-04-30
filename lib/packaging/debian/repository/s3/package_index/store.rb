@@ -64,16 +64,16 @@ module Packaging
 
               logger.trace { "Getting package index (Object Key: #{object_key.inspect})" }
 
-              begin
-                data_source = get_object.(object_key)
-              rescue AWS::S3::Client::Object::Get::ObjectNotFound
+              data_stream = get_object.(object_key)
+
+              if data_stream.nil?
                 logger.warn { "Package index file not found (Object Key: #{object_key.inspect})" }
                 return nil
               end
 
               compressed_text = String.new
 
-              compressed_text << data_source.read until data_source.eof?
+              compressed_text << data_stream.read until data_stream.eof?
 
               package_index = ::Transform::Read.(
                 compressed_text,

@@ -30,9 +30,9 @@ module Packaging
 
               logger.trace { "Getting package (Object Key: #{object_key.inspect})" }
 
-              begin
-                data_stream = get_object.(object_key)
-              rescue AWS::S3::Client::Object::Get::ObjectNotFound
+              data_stream = get_object.(object_key)
+
+              if data_stream.nil?
                 logger.warn { "Package file not found (Object Key: #{object_key.inspect})" }
                 return nil
               end
