@@ -3,7 +3,7 @@ module Packaging
     module Repository
       module S3
         module Controls
-          PackageIndex = Packaging::Debian::Schemas::Controls::Repository::PackageIndex
+          PackageIndex = Packaging::Debian::Schemas::Controls::PackageIndex
 
           module PackageIndex
             module Text

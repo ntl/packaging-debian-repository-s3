@@ -21,7 +21,7 @@ context "Commands" do
 
       test "Does not raise error" do
         refute proc { register_package.(index_entry) } do
-          raises_error?(Packaging::Debian::Schemas::Repository::PackageIndex::EntryAddedError)
+          raises_error?(Packaging::Debian::Schemas::PackageIndex::EntryAddedError)
         end
       end
 
