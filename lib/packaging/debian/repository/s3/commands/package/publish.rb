@@ -67,15 +67,13 @@ module Packaging
 
                 calculate_sha256 = ::Digest::SHA2.new(256)
 
-                File.open(deb_file) do |file|
-                  calculate_sha256 << file.read until file.eof?
+                index_entry.sha256 = Schemas::SHA256.(deb_file)
 
+                File.open(deb_file) do |file|
                   file.rewind
 
                   put_object.(object_key, file)
                 end
-
-                index_entry.sha256 = calculate_sha256.hexdigest
 
                 register_package.(index_entry, component: component)
 
