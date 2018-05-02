@@ -1,3 +1,3 @@
 source ./library-symlinks.sh
 
-symlink_lib 'client' 'package_repository/debian'
+symlink_lib 's3' 'packaging/debian/repository'
