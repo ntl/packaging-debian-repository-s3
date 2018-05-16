@@ -29,13 +29,15 @@ module Packaging
               instance.()
             end
 
-            def get
-              logger.trace { "Getting release (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+            def get(distribution: nil)
+              object_key = object_key(distribution)
+
+              logger.trace { "Getting release (Object Key: #{object_key.inspect})" }
 
               data_stream = get_object.(object_key)
 
               if data_stream.nil?
-                logger.warn { "Release file not found (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+                logger.warn { "Release file not found (Object Key: #{object_key.inspect})" }
                 return nil
               end
 
@@ -45,7 +47,7 @@ module Packaging
 
               release = ::Transform::Read.(text, :rfc822_signed, Release)
 
-              logger.info { "Get release done (Distribution: #{distribution}, Object Key: #{object_key.inspect})" }
+              logger.info { "Get release done (Object Key: #{object_key.inspect})" }
 
               release
             end
