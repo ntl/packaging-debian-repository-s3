@@ -11,6 +11,7 @@ module Packaging
 
               class Store < Store
                 attr_accessor :get_release
+                attr_accessor :get_distribution
 
                 def self.build
                   distribution = self.distribution
@@ -22,12 +23,14 @@ module Packaging
                   'null'
                 end
 
-                def get
+                def get(distribution: nil)
+                  return nil unless distribution == get_distribution
+
                   get_release
                 end
 
-                def fetch
-                  get_release || Release.new
+                def fetch(distribution: nil)
+                  get(distribution: distribution) || Release.new
                 end
 
                 def put?(release=nil, &block)
@@ -46,8 +49,9 @@ module Packaging
                   end
                 end
 
-                def add(release)
+                def add(release, distribution=nil)
                   self.get_release = release
+                  self.get_distribution = distribution
                 end
               end
             end
