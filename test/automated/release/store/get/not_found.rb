@@ -4,9 +4,9 @@ context "Release" do
   context "Store" do
     context "Get" do
       context "Not Found" do
-        distribution = Controls::Distribution.example
+        store = Release::Store.new
 
-        store = Release::Store.new(distribution)
+        store.distribution = Controls::Distribution.example
 
         release = store.get
 

@@ -11,7 +11,9 @@ context "Release" do
         context "Given" do
           override_distribution = Controls::Distribution::Alternate.example
 
-          store = Release::Store.new(distribution)
+          store = Release::Store.new
+
+          store.distribution = distribution
 
           put_key, _ = store.put(release, distribution: override_distribution)
 
@@ -23,7 +25,9 @@ context "Release" do
         end
 
         context "Omitted" do
-          store = Release::Store.new(distribution)
+          store = Release::Store.new
+
+          store.distribution = distribution
 
           put_key, _ = store.put(release)
 

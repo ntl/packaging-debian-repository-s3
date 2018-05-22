@@ -8,7 +8,7 @@ module Packaging
 
             configure :store
 
-            initializer :distribution
+            attr_accessor :distribution
 
             dependency :get_object, AWS::S3::Client::Object::Get
             dependency :put_object, AWS::S3::Client::Object::Put
@@ -18,8 +18,9 @@ module Packaging
               AWS::S3::Client::Object::Put.configure(self)
             end
 
-            def self.build(distribution)
-              instance = new(distribution)
+            def self.build(distribution=nil)
+              instance = new
+              instance.distribution = distribution unless distribution.nil?
               instance.configure
               instance
             end

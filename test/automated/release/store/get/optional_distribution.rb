@@ -4,9 +4,9 @@ context "Release" do
   context "Store" do
     context "Get" do
       context "Optional Distribution" do
-        other_distribution = Controls::Distribution::Alternate.example
+        store = Release::Store.new
 
-        store = Release::Store.new(other_distribution)
+        store.distribution = Controls::Distribution::Alternate.example
 
         distribution = Controls::Distribution.example
 

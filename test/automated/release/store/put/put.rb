@@ -7,7 +7,9 @@ context "Release" do
 
       release = Controls::Release.example
 
-      store = Release::Store.new(distribution)
+      store = Release::Store.new
+
+      store.distribution = distribution
 
       put_object = store.put_object
 

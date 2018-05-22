@@ -5,7 +5,9 @@ context "Release" do
     context "Fetch" do
       distribution = Controls::Distribution.example
 
-      store = Release::Store.new(distribution)
+      store = Release::Store.new
+
+      store.distribution = distribution
 
       object_key = Controls::Release::Path.example(distribution)
 

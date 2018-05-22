@@ -32,8 +32,8 @@ module Packaging
               end
 
               def self.call(deb_file, distribution: nil, component: nil)
-                instance = build(distribution)
-                instance.(deb_file, component: component)
+                instance = build
+                instance.(deb_file, component: component, distribution: distribution)
               end
 
               def call(deb_file, component: nil, distribution: nil)

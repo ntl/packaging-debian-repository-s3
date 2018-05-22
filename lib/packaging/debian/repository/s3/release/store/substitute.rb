@@ -14,9 +14,9 @@ module Packaging
                 attr_accessor :get_distribution
 
                 def self.build
-                  distribution = self.distribution
-
-                  new(distribution)
+                  instance = new
+                  instance.distribution = distribution
+                  instance
                 end
 
                 def self.distribution
