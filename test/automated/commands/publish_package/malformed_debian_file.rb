@@ -5,9 +5,9 @@ context "Commands" do
     context "Malformed Debian File" do
       deb_file = Controls::Package::File::Malformed.example
 
-      distribution = Controls::Distribution.example
+      publish_package = Commands::Package::Publish.new
 
-      publish_package = Commands::Package::Publish.new(distribution)
+      publish_package.distribution = Controls::Distribution.example
 
       test "Raises error" do
         assert proc { publish_package.(deb_file) } do

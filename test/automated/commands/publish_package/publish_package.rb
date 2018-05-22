@@ -4,10 +4,11 @@ context "Commands" do
   context "Publish Package" do
     deb_file = Controls::Package::File.example
 
-    distribution = Controls::Distribution.example
     component = Controls::Component.example
 
-    publish_package = Commands::Package::Publish.new(distribution)
+    publish_package = Commands::Package::Publish.new
+
+    publish_package.distribution = Controls::Distribution.example
 
     index_entry = publish_package.(deb_file, component: component)
 

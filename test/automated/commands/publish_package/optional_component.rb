@@ -10,7 +10,9 @@ context "Commands" do
       context "Given" do
         component = Controls::Component.example
 
-        publish_package = Commands::Package::Publish.new(distribution)
+        publish_package = Commands::Package::Publish.new
+
+        publish_package.distribution = distribution
 
         index_entry = publish_package.(deb_file, component: component)
 
@@ -28,7 +30,9 @@ context "Commands" do
       end
 
       context "Omitted" do
-        publish_package = Commands::Package::Publish.new(distribution)
+        publish_package = Commands::Package::Publish.new
+
+        publish_package.distribution = distribution
 
         index_entry = publish_package.(deb_file)
 

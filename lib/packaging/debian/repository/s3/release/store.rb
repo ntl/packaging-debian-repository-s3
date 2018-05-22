@@ -24,11 +24,6 @@ module Packaging
               instance
             end
 
-            def self.call(distribution)
-              instance = build(distribution)
-              instance.()
-            end
-
             def get(distribution: nil)
               object_key = object_key(distribution)
 
