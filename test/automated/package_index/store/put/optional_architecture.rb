@@ -10,7 +10,10 @@ context "Package Index" do
       context "Given" do
         architecture = Controls::Random.unique_text
 
-        store = PackageIndex::Store.new(distribution)
+        store = PackageIndex::Store.new
+
+        store.distribution = distribution
+
         store.put(package_index, architecture: architecture)
 
         put_object = store.put_object
@@ -29,7 +32,10 @@ context "Package Index" do
       end
 
       context "Omitted" do
-        store = PackageIndex::Store.new(distribution)
+        store = PackageIndex::Store.new
+
+        store.distribution = distribution
+
         store.put(package_index)
 
         put_object = store.put_object

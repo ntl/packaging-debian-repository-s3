@@ -11,9 +11,9 @@ module Packaging
 
               class Store < Store
                 def self.build
-                  distribution = self.distribution
-
-                  new(distribution)
+                  instance = new
+                  instance.distribution = distribution
+                  instance
                 end
 
                 def self.distribution

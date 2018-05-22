@@ -3,9 +3,9 @@ require_relative '../../../automated_init'
 context "Package Index" do
   context "Store" do
     context "Get" do
-      distribution = Controls::Distribution.example
+      store = PackageIndex::Store.new
 
-      store = PackageIndex::Store.new(distribution)
+      store.distribution = Controls::Distribution.example
 
       object_key = Controls::PackageIndex::Path::Default.example
 

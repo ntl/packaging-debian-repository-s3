@@ -4,9 +4,9 @@ context "Package Index" do
   context "Store" do
     context "Fetch" do
       context "Not Found" do
-        distribution = Controls::Distribution.example
+        store = PackageIndex::Store.new
 
-        store = PackageIndex::Store.new(distribution)
+        store.distribution = Controls::Distribution.example
 
         package_index = store.fetch
 

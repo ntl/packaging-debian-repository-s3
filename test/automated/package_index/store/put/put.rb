@@ -5,7 +5,9 @@ context "Package Index" do
     context "Put" do
       distribution = Controls::Distribution.example
 
-      store = PackageIndex::Store.new(distribution)
+      store = PackageIndex::Store.new
+
+      store.distribution = distribution
 
       package_index = Controls::PackageIndex.example
 

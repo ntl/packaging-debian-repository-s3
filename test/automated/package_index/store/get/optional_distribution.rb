@@ -9,7 +9,9 @@ context "Package Index" do
         context "Given" do
           override_distribution = Controls::Distribution::Alternate.example
 
-          store = PackageIndex::Store.new(distribution)
+          store = PackageIndex::Store.new
+
+          store.distribution = distribution
 
           object_key = Controls::PackageIndex::Path::Default.example(
             distribution: override_distribution
@@ -28,7 +30,9 @@ context "Package Index" do
         end
 
         context "Omitted" do
-          store = PackageIndex::Store.new(distribution)
+          store = PackageIndex::Store.new
+
+          store.distribution = distribution
 
           object_key = Controls::PackageIndex::Path::Default.example(
             distribution: distribution

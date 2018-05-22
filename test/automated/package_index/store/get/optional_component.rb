@@ -9,7 +9,9 @@ context "Package Index" do
         context "Given" do
           component = Controls::Random.unique_text
 
-          store = PackageIndex::Store.new(distribution)
+          store = PackageIndex::Store.new
+
+          store.distribution = distribution
 
           object_key = Controls::PackageIndex::Path::Default.example(
             component: component
@@ -30,7 +32,9 @@ context "Package Index" do
         context "Omitted" do
           default_component = Defaults.component
 
-          store = PackageIndex::Store.new(distribution)
+          store = PackageIndex::Store.new
+
+          store.distribution = distribution
 
           object_key = Controls::PackageIndex::Path::Default.example
 

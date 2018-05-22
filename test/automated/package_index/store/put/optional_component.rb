@@ -10,7 +10,10 @@ context "Package Index" do
       context "Given" do
         component = Controls::Random.unique_text
 
-        store = PackageIndex::Store.new(distribution)
+        store = PackageIndex::Store.new
+
+        store.distribution = distribution
+
         store.put(package_index, component: component)
 
         put_object = store.put_object
@@ -31,7 +34,10 @@ context "Package Index" do
       context "Omitted" do
         default_copmonent = Defaults.component
 
-        store = PackageIndex::Store.new(distribution)
+        store = PackageIndex::Store.new
+
+        store.distribution = distribution
+
         store.put(package_index)
 
         put_object = store.put_object

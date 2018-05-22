@@ -19,6 +19,8 @@ module Packaging
               AWS::S3::Client::Object::Put.configure(self)
             end
 
+            attr_accessor :distribution
+
             attr_writer :architecture
             def architecture
               @architecture ||= Defaults.architecture
@@ -29,16 +31,16 @@ module Packaging
               @component ||= Defaults.component
             end
 
-            initializer :distribution
-
-            def self.build(distribution_or_path)
-              if match_data = parse_path(distribution_or_path)
+            def self.build(distribution_or_path=nil)
+              if distribution_or_path.nil?
+              elsif match_data = parse_path(distribution_or_path)
                 distribution, component, architecture = match_data
               else
                 distribution = distribution_or_path
               end
 
-              instance = new(distribution)
+              instance = new
+              instance.distribution = distribution unless distribution.nil?
               instance.configure(component: component, architecture: architecture)
               instance
             end

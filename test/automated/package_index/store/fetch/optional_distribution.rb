@@ -4,10 +4,11 @@ context "Package Index" do
   context "Store" do
     context "Fetch" do
       context "Optional Distribution" do
-        distribution = Controls::Distribution.example
         override_distribution = Controls::Random.unique_text
 
-        store = PackageIndex::Store.new(distribution)
+        store = PackageIndex::Store.new
+
+        store.distribution = Controls::Distribution.example
 
         object_key = Controls::PackageIndex::Path::Default.example(
           distribution: override_distribution
