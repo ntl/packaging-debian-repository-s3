@@ -11,8 +11,8 @@ module Packaging
                 end
 
                 class Publish
-                  def call(deb_file, component: nil)
-                    record = Record.new(deb_file, component)
+                  def call(deb_file, distribution: nil, component: nil)
+                    record = Record.new(deb_file, distribution, component)
 
                     records << record
 
@@ -23,7 +23,7 @@ module Packaging
                     block ||= proc { |file| deb_file.nil? || file == deb_file }
 
                     records.any? do |record|
-                      block.(record.deb_file, record.component)
+                      block.(record.deb_file, record.distribution, record.component)
                     end
                   end
 
@@ -31,7 +31,7 @@ module Packaging
                     @records ||= []
                   end
 
-                  Record = Struct.new(:deb_file, :component)
+                  Record = Struct.new(:deb_file, :distribution, :component)
                 end
               end
             end

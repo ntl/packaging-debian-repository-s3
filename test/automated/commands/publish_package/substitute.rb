@@ -8,9 +8,10 @@ context "Commands" do
 
         deb_file = Controls::Package.example
 
+        distribution = Controls::Distribution.example
         component = Controls::Component.example
 
-        substitute.(deb_file, component: component)
+        substitute.(deb_file, distribution: distribution, component: component)
 
         context "Published Predicate" do
           context "No Argument" do
@@ -44,12 +45,20 @@ context "Commands" do
               assert(yielded_argument == deb_file)
             end
 
-            test "Component is yielded to block" do
+            test "Distribution is yielded to block" do
               second_yielded_argument = nil
 
-              substitute.published? { |_, comp| second_yielded_argument = comp }
+              substitute.published? { |_, dist| second_yielded_argument = dist }
 
-              assert(second_yielded_argument == component)
+              assert(second_yielded_argument == distribution)
+            end
+
+            test "Component is yielded to block" do
+              third_yielded_argument = nil
+
+              substitute.published? { |_, _, comp| third_yielded_argument = comp }
+
+              assert(third_yielded_argument == component)
             end
 
             context "Block Evaluates to False" do
