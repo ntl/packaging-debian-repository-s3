@@ -5,7 +5,6 @@ context "Commands" do
     context "Release File is Updated" do
       index_entry = Controls::PackageIndex::Entry.example
 
-      distribution = Controls::Distribution.example
       component = Controls::Random.unique_text
       architecture = index_entry.architecture or fail
 
@@ -19,7 +18,8 @@ context "Commands" do
       refute(prior_release.files.empty?)
       refute(prior_release.added_file?(package_index_path))
 
-      register_package = Commands::Package::Register.new(distribution)
+      register_package = Commands::Package::Register.new
+      register_package.distribution = Controls::Distribution.example
 
       release_store = register_package.release_store
       release_store.add(prior_release)

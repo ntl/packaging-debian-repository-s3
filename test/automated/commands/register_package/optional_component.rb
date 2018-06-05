@@ -5,19 +5,18 @@ context "Commands" do
     context "Optional Component" do
       index_entry = Controls::PackageIndex::Entry.example
 
-      distribution = Controls::Distribution.example
       architecture = index_entry.architecture or fail
 
       context "Given" do
         component = Controls::Component::Alternate.example
 
-        register_package = Commands::Package::Register.new(distribution)
+        register_package = Commands::Package::Register.new
+        register_package.distribution = Controls::Distribution.example
 
         register_package.(index_entry, component: component)
 
         test "Package index is uploaded to given component" do
           control_object_key = Controls::PackageIndex::Path.example(
-            distribution: distribution,
             component: component,
             architecture: architecture
           )
@@ -45,13 +44,13 @@ context "Commands" do
       context "Omitted" do
         default_component = Defaults.component
 
-        register_package = Commands::Package::Register.new(distribution)
+        register_package = Commands::Package::Register.new
+        register_package.distribution = Controls::Distribution.example
 
         register_package.(index_entry)
 
         test "Package index is uploaded to default component" do
           control_object_key = Controls::PackageIndex::Path.example(
-            distribution: distribution,
             component: default_component,
             architecture: architecture
           )

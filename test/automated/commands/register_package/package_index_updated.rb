@@ -15,7 +15,8 @@ context "Commands" do
       package_index = Controls::PackageIndex.example(entries: [prior_index_entry])
       assert(package_index.added?(prior_index_entry.filename))
 
-      register_package = Commands::Package::Register.new(distribution)
+      register_package = Commands::Package::Register.new
+      register_package.distribution = distribution
 
       package_index_store = register_package.package_index_store
       package_index_store.add(package_index, distribution: distribution, component: component, architecture: architecture)

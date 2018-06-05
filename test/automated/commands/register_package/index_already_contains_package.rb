@@ -11,10 +11,10 @@ context "Commands" do
 
       package_index = Controls::PackageIndex.example(entries: [prior_index_entry])
 
-      distribution = Controls::Distribution.example
       architecture = index_entry.architecture or fail
 
-      register_package = Commands::Package::Register.new(distribution)
+      register_package = Commands::Package::Register.new
+      register_package.distribution = Controls::Distribution.example
 
       package_index_store = register_package.package_index_store
       package_index_store.add(package_index)

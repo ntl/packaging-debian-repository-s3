@@ -7,15 +7,16 @@ context "Commands" do
 
       index_entry = Controls::PackageIndex::Entry.example(architecture: architecture)
 
+      distribution = Controls::Distribution.example
+
       context do
         release = Controls::Release.example
 
         release_architectures = release.architectures
         assert(release_architectures.count > 1)
 
-        distribution = Controls::Distribution.example
-
-        register_package = Commands::Package::Register.new(distribution)
+        register_package = Commands::Package::Register.new
+        register_package.distribution = distribution
 
         release_store = register_package.release_store
         release_store.add(release)
@@ -44,9 +45,8 @@ context "Commands" do
       end
 
       context "Release Architectures Field is Empty" do
-        distribution = Controls::Distribution.example
-
-        register_package = Commands::Package::Register.new(distribution)
+        register_package = Commands::Package::Register.new
+        register_package.distribution = distribution
 
         test "Raises error" do
           assert proc { register_package.(index_entry) } do

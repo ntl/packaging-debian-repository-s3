@@ -10,6 +10,8 @@ module Packaging
 
               configure :register_package
 
+              attr_accessor :distribution
+
               attr_writer :component
               def component
                 @component ||= Defaults.component
@@ -25,10 +27,9 @@ module Packaging
                 Release::Store.configure(self, distribution, attr_name: :release_store)
               end
 
-              initializer :distribution
-
-              def self.build(distribution)
-                instance = new(distribution)
+              def self.build(distribution=nil)
+                instance = new
+                instance.distribution = distribution unless distribution.nil?
                 instance.configure
                 instance
               end
@@ -41,13 +42,14 @@ module Packaging
                 sink
               end
 
-              def self.call(index_entry, distribution, component: nil)
+              def self.call(index_entry, distribution=nil, component: nil)
                 instance = build(distribution)
                 instance.(index_entry, component: component)
               end
 
-              def call(index_entry, component: nil)
+              def call(index_entry, distribution: nil, component: nil)
                 component ||= self.component
+                distribution ||= self.distribution
                 architecture = index_entry.architecture
 
                 release = release_store.fetch
@@ -65,11 +67,11 @@ module Packaging
                 end
 
                 architectures.each do |architecture|
-                  register(index_entry, release, component, architecture)
+                  register(index_entry, release, distribution, component, architecture)
                 end
               end
 
-              def register(index_entry, release, component, architecture)
+              def register(index_entry, release, distribution, component, architecture)
                 logger.trace { "Registering package index entry (Filename: #{index_entry.filename}, Component: #{component || '(default)'}, Architecture: #{architecture.inspect})" }
 
                 index = package_index_store.fetch(

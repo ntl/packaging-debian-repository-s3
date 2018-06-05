@@ -4,11 +4,12 @@ context "Commands" do
   context "Register Package" do
     index_entry = Controls::PackageIndex::Entry.example
 
-    distribution = Controls::Distribution.example
     component = Controls::Component.example
     architecture = index_entry.architecture or fail
 
-    register_package = Commands::Package::Register.new(distribution)
+    register_package = Commands::Package::Register.new
+
+    register_package.distribution = distribution = Controls::Distribution.example
 
     effective_time = Controls::Time::Raw.example
     register_package.clock.now = effective_time
