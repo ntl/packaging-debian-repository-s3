@@ -8,9 +8,10 @@ context "Commands" do
 
         index_entry = Controls::PackageIndex::Entry.example
 
+        distribution = Controls::Distribution.example
         component = Controls::Component.example
 
-        substitute.(index_entry, component: component)
+        substitute.(index_entry, distribution: distribution, component: component)
 
         context "Registered Predicate" do
           context "No Argument" do
@@ -44,12 +45,20 @@ context "Commands" do
               assert(yielded_argument == index_entry)
             end
 
-            test "Component is yielded to block" do
+            test "Distribution is yielded to block" do
               second_yielded_argument = nil
 
-              substitute.registered? { |_, comp| second_yielded_argument = comp }
+              substitute.registered? { |_, dist| second_yielded_argument = dist }
 
-              assert(second_yielded_argument == component)
+              assert(second_yielded_argument == distribution)
+            end
+
+            test "Component is yielded to block" do
+              third_yielded_argument = nil
+
+              substitute.registered? { |_, _, comp| third_yielded_argument = comp }
+
+              assert(third_yielded_argument == component)
             end
 
             context "Block Evaluates to False" do

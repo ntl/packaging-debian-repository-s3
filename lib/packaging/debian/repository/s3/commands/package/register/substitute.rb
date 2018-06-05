@@ -11,8 +11,8 @@ module Packaging
                 end
 
                 class Register
-                  def call(index_entry, component: nil)
-                    registration = Registration.new(index_entry, component)
+                  def call(index_entry, distribution: nil, component: nil)
+                    registration = Registration.new(index_entry, distribution, component)
 
                     registrations << registration
 
@@ -23,7 +23,7 @@ module Packaging
                     block ||= proc { |entry| index_entry.nil? || entry == index_entry }
 
                     registrations.any? do |registration|
-                      block.(registration.index_entry, registration.component)
+                      block.(*registration.to_a)
                     end
                   end
 
@@ -31,7 +31,7 @@ module Packaging
                     @registrations ||= []
                   end
 
-                  Registration = Struct.new(:index_entry, :component)
+                  Registration = Struct.new(:index_entry, :distribution, :component)
                 end
               end
             end
