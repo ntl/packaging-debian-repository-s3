@@ -21,8 +21,8 @@ context "Commands" do
             component: component
           )
 
-          registered = publish_package.register_package.registered? do |_, component|
-            component == component
+          registered = publish_package.register_package.registered? do |_, _, comp|
+            comp == component
           end
 
           assert(registered)
@@ -39,8 +39,8 @@ context "Commands" do
         test "Package is registered with default component" do
           control_object_key = Controls::PackageIndex::Path::Default.example
 
-          registered = publish_package.register_package.registered? do |_, component|
-            component == Defaults.component
+          registered = publish_package.register_package.registered? do |_, _, comp|
+            comp == Defaults.component
           end
 
           assert(registered)

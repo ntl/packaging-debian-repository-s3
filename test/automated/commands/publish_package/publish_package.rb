@@ -4,13 +4,11 @@ context "Commands" do
   context "Publish Package" do
     deb_file = Controls::Package::File.example
 
-    component = Controls::Component.example
-
     publish_package = Commands::Package::Publish.new
 
-    publish_package.distribution = Controls::Distribution.example
+    publish_package.distribution = distribution = Controls::Distribution.example
 
-    index_entry = publish_package.(deb_file, component: component)
+    index_entry = publish_package.(deb_file)
 
     context "Package File Upload" do
       test "Package file is uploaded to pool" do
@@ -38,8 +36,8 @@ context "Commands" do
       end
 
       test "Is registered" do
-        registered = publish_package.register_package.registered? do |entry, comp|
-          entry == index_entry && comp == component
+        registered = publish_package.register_package.registered? do |entry, dist, comp|
+          entry == index_entry && dist == distribution && comp == publish_package.component
         end
 
         assert(registered)

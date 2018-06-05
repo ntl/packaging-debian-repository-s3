@@ -83,7 +83,7 @@ module Packaging
                   put_object.(object_key, file)
                 end
 
-                register_package.(index_entry, component: component)
+                register_package.(index_entry, component: component, distribution: distribution)
 
                 logger.info { "Package published (File: #{filename.inspect}, Object Key: #{object_key.inspect}, Distribution: #{distribution.inspect}, Component: #{component.inspect})" }
 
