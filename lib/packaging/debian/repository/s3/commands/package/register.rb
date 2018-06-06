@@ -101,7 +101,7 @@ module Packaging
                 release.components << component
                 release.date = clock.now
 
-                release.add_file(
+                release.add_file!(
                   compressed_index_path,
                   compressed_index_size,
                   sha256: compressed_index_sha256
@@ -113,7 +113,7 @@ module Packaging
                 uncompressed_size = uncompressed_text.bytesize
                 uncompressed_sha256 = Digest::SHA256.hexdigest(uncompressed_text)
 
-                release.add_file(
+                release.add_file!(
                   uncompressed_path,
                   uncompressed_size,
                   sha256: uncompressed_sha256
