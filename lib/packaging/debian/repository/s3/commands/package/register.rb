@@ -80,7 +80,7 @@ module Packaging
                   architecture: architecture
                 )
 
-                index.add_entry!(index_entry)
+                index.add_entry(index_entry)
 
                 compressed_index_path, compressed_index_text = package_index_store.put(
                   index,
