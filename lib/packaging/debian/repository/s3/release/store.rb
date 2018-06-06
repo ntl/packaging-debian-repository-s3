@@ -48,8 +48,8 @@ module Packaging
               release
             end
 
-            def fetch
-              release = get
+            def fetch(distribution: nil)
+              release = get(distribution: distribution)
 
               if release.nil?
                 release = Release.new
