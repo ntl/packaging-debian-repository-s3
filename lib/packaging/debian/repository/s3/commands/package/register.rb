@@ -52,7 +52,7 @@ module Packaging
                 distribution ||= self.distribution
                 architecture = index_entry.architecture
 
-                release = release_store.fetch
+                release = release_store.fetch(distribution: distribution)
 
                 if architecture == 'all'
                   architectures = release.architectures

@@ -19,7 +19,7 @@ context "Commands" do
         register_package.distribution = distribution
 
         release_store = register_package.release_store
-        release_store.add(release)
+        release_store.add(release, distribution)
 
         package_index_store = register_package.package_index_store
 
