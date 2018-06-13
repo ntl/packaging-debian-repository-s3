@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'packaging-debian-repository-s3'
-  s.version = '0.2.2.2'
+  s.version = '0.2.2.3'
   s.summary = 'Library for publishing debian packages to S3 repositories'
   s.description = ' '
 
