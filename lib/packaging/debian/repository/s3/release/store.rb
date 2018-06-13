@@ -67,7 +67,7 @@ module Packaging
 
               data_stream = StringIO.new(signed_text)
 
-              put_object.(object_key, data_stream, acl: 'public-read')
+              put_object.(object_key, data_stream, acl: Defaults.acl)
 
               logger.info { "Put release done (Object Key: #{object_key.inspect})" }
 

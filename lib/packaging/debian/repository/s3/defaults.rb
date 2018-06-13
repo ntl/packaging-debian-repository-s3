@@ -10,6 +10,10 @@ module Packaging
           def self.component
             'main'
           end
+
+          def self.acl
+            'private'
+          end
         end
       end
     end

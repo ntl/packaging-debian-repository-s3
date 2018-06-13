@@ -40,7 +40,7 @@ module Packaging
 
               logger.trace { "Putting package (Object Key: #{object_key.inspect})" }
 
-              put_object.(object_key, data_stream, acl: 'public-read')
+              put_object.(object_key, data_stream, acl: Defaults.acl)
 
               logger.info { "Put package done (Object Key: #{object_key.inspect})" }
             end
