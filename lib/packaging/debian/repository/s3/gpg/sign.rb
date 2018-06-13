@@ -17,17 +17,21 @@ module Packaging
             end
 
             def call(text)
-              gpg_command = %W(
+              if File.size?(password_file)
+                passphrase_argument = "--passphrase-file #{password_file}"
+              end
+
+              gpg_command = <<~SH.gsub(%r{[[:space:]]+}, ' ')
               gpg
                 --homedir=./keyring
                 --armor
                 --batch
                 --sign
                 --pinentry-mode loopback
-                --passphrase-file #{password_file}
+                #{passphrase_argument}
                 --output -
                 --clearsign
-              )
+              SH
 
               success, signed_text, exit_status = ShellCommand::Execute.(
                 gpg_command,

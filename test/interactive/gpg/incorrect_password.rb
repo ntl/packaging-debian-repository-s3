@@ -1,7 +1,7 @@
-require_relative './interactive_init'
+require_relative '../interactive_init'
 
 context "GPG" do
-  context "GPG Password Error" do
+  context "Incorrect Password" do
     comment "Note: gpg-agent must be disabled before running this test"
     comment "To disable gpg-agent, `killall gpg-agent`"
 
